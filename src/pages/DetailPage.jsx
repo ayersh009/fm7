@@ -1,15 +1,21 @@
 import React from 'react';
-import { Page, Navbar, BlockTitle, List, ListItem, Block, Link, BlockFooter } from 'framework7-react';
+import {
+  Page,
+  Navbar,
+  BlockTitle,
+  List,
+  ListItem
+} from 'framework7-react';
 
 const DetailPage = ({ f7route }) => {
-  const { item } = f7route.params.item || {};  // Changed from f7route.props to f7route.params
+  const item = f7route.params.item ? JSON.parse(f7route.params.item) : {};
 
   if (!item) {
     return (
       <Page>
-        <Navbar title="Item Details" backLink="Back" />
+        <Navbar title='Item Details' backLink='Back' />
         <Block strong>
-          <p>{ item }</p>
+          <p>No Item to display</p>
         </Block>
       </Page>
     );
@@ -28,28 +34,27 @@ const DetailPage = ({ f7route }) => {
     'Expiry_Date',
     'Hold_Remarks',
     'Remaining Self_Life',
-    'Allocation_for',
+    'Allocation_for'
   ];
+
+  const getStyleForHoldRemarks = (value) => {
+    return title === 'Released' ? { color: '#088F8F' } : { color: 'red' };
+  };
 
   return (
     <Page>
-      <Navbar title="Item Details" backLink="Back" />
-      <BlockTitle>Item Details</BlockTitle>
+      <Navbar title='Pallet Details' backLink='Back' />
+      <BlockTitle>Pallet Details</BlockTitle>
       <List>
         {columnsToDisplay.map((key, index) => (
           <ListItem
             key={index}
-            title={key}
-            after={item[key] || 'N/A'}
-            link="#"
+            header={key}
+            title={item[key] || '-'}
+            style={key === 'Hold_Remarks' ? getStyleForHoldRemarks(item[key]) : { whiteSpace: 'normal' }} // Added this line
           />
         ))}
       </List>
-      <BlockFooter>
-        <Block>
-          <Link href="/" iconF7="arrow_left">Back to List</Link>
-        </Block>
-      </BlockFooter>
     </Page>
   );
 };

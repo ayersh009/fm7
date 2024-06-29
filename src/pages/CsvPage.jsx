@@ -20,7 +20,7 @@ import Papa from 'papaparse';
 const csvurl =
   'https://docs.google.com/spreadsheets/d/e/2PACX-1vQt0HJ_mtSACZ88zpfjScQNNmzlqnvGJocVMIaC-MJ_hX4LCfd5VWrZRkPDI37e1VWuDszlw-789W6v/pub?gid=854843404&single=true&output=csv';
 
-const CsvPage = ({ f7router }) => {
+const CsvPage = ({f7router}) => {
   const [data, setData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
@@ -31,12 +31,13 @@ const CsvPage = ({ f7router }) => {
 
   const localStorageKey = 'csvData';
 
-  const fetchData = (refresh = false) => {
+  const fetchData = (refresh = false, done = () => {}) => {
     if (!refresh) {
       const savedData = localStorage.getItem(localStorageKey);
       if (savedData) {
         setData(JSON.parse(savedData));
         setLoading(false);
+        done();
         return;
       }
     }
@@ -48,10 +49,12 @@ const CsvPage = ({ f7router }) => {
         setData(results.data);
         localStorage.setItem(localStorageKey, JSON.stringify(results.data));
         setLoading(false);
+        done();
       },
       error: err => {
         setError(err.message);
         setLoading(false);
+        done();
       }
     });
   };
@@ -61,8 +64,7 @@ const CsvPage = ({ f7router }) => {
   }, []);
 
   const handlePullToRefresh = done => {
-    fetchData(true);
-    done();
+    fetchData(true, done);
   };
 
   const uniqueValues = field => {
@@ -103,9 +105,7 @@ const CsvPage = ({ f7router }) => {
   };
 
   const handleItemClick = item => {
-    f7router.navigate('/detail/', {
-      params: { item }
-    });
+    f7router.navigate(`/detail/${JSON.stringify(item)}`);
   };
 
   return (
@@ -187,16 +187,12 @@ const CsvPage = ({ f7router }) => {
         <List>
           {filteredData.map((item, index) => (
             <ListItem
-            key={index}
-            link="#"
-            title={columnsToDisplay.map(col => item[col]).join(' • ')}
-            style={getItemStyle(item.Status)}
-            onClick={() => {
-              f7router.navigate('/detail/', {
-                params: {item: item,}
-              });
-            }}
-          />
+              key={index}
+              link="#"
+              title={columnsToDisplay.map(col => item[col]).join(' • ')}
+              style={getItemStyle(item.Status)}
+              onClick={() => handleItemClick(item)}
+            />
           ))}
         </List>
       )}

@@ -36,7 +36,7 @@ var routes = [
     component: ProductPage,
   },
   {
-    path: '/detail/',
+    path: '/detail/:item',
     component: DetailPage,
   },
   {
