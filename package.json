@@ -1,0 +1,57 @@
+{
+  "name": "my-app",
+  "private": true,
+  "version": "1.0.0",
+  "description": "My App",
+  "repository": "",
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "npm run dev",
+    "copy":"npx cap copy",
+    "open":"npx cap open android",
+    "dev": "cross-env NODE_ENV=development vite",
+    "build": "cross-env NODE_ENV=production vite build && npx workbox generateSW workbox-config.js",
+    "build-capacitor-android": "cross-env NODE_ENV=production vite build && npx cap copy android",
+    "postinstall": "cpy --flat ./node_modules/framework7-icons/fonts/*.* ./src/fonts/ && cpy --flat ./node_modules/material-icons/iconfont/*.* ./src/fonts/"
+  },
+  "browserslist": [
+    "IOS >= 15",
+    "Safari >= 15",
+    "last 5 Chrome versions",
+    "last 5 Firefox versions"
+  ],
+  "dependencies": {
+    "@capacitor/android": "^6.1.0",
+    "@capacitor/app": "^6.0.0",
+    "@capacitor/browser": "^6.0.0",
+    "@capacitor/core": "^6.1.0",
+    "@capacitor/keyboard": "^6.0.0",
+    "@capacitor/share": "^6.0.1",
+    "@capacitor/splash-screen": "^6.0.0",
+    "@capacitor/status-bar": "^6.0.0",
+    "@supabase/supabase-js": "^2.43.4",
+    "axios": "^1.7.2",
+    "dom7": "^4.0.6",
+    "framework7": "^8.3.3",
+    "framework7-icons": "^5.0.5",
+    "framework7-react": "^8.3.3",
+    "material-icons": "^1.13.12",
+    "papaparse": "^5.4.1",
+    "prop-types": "^15.8.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "skeleton-elements": "^4.0.1",
+    "swiper": "^11.1.4"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.1.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "cordova-res": "^0.15.4",
+    "cpy-cli": "^5.0.0",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.4.5",
+    "postcss-preset-env": "^9.5.14",
+    "vite": "^5.2.13",
+    "workbox-cli": "^7.1.0"
+  }
+}
