@@ -38,20 +38,21 @@ const DetailPage = ({ f7route }) => {
   ];
 
   const getStyleForHoldRemarks = (value) => {
-    return title === 'Released' ? { color: '#088F8F' } : { color: 'red' };
+    return value === 'Released' ? { color: 'green' } : { color: 'red' };
   };
 
   return (
     <Page>
-      <Navbar title='Pallet Details' backLink='Back' />
-      <BlockTitle>Pallet Details</BlockTitle>
+      <Navbar title='Item Details' backLink='Back' />
+      <BlockTitle>Item Details</BlockTitle>
       <List>
         {columnsToDisplay.map((key, index) => (
           <ListItem
             key={index}
             header={key}
             title={item[key] || '-'}
-            style={key === 'Hold_Remarks' ? getStyleForHoldRemarks(item[key]) : { whiteSpace: 'normal' }} // Added this line
+            style={key === 'Hold_Remarks' ? { whiteSpace: 'normal' } : {}}
+            titleStyle={key === 'Hold_Remarks' ? getStyleForHoldRemarks(item[key]) : {}}
           />
         ))}
       </List>

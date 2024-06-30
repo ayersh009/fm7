@@ -1,16 +1,28 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react'
-import { Page, List, BlockTitle, Navbar, Preloader, SkeletonBlock,Block, SkeletonText,ListItem } from 'framework7-react'
+import {
+  Page,
+  List,
+  BlockTitle,
+  Navbar,
+  Preloader,
+  SkeletonBlock,
+  Block,
+  SkeletonText,
+  ListItem
+} from 'framework7-react'
 import { supabase } from '../components/supabase'
 import TrackingCard from '../components/trackingcard'
 import InProcessCard from '../components/inprocesscard'
 import './orderp.css' // Assuming you save your CSS in OrderPage.css
 
-const OrderPage = () => {
-  const [trackingData, setTrackingData] = useState({ inProcess: [], others: [] })
+const OrderPage = ({ f7router }) => {
+  const [trackingData, setTrackingData] = useState({
+    inProcess: [],
+    others: []
+  })
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [selectedDetails, setSelectedDetails] = useState(null)
-  const bottomSheetRef = useRef(null)
 
   useEffect(() => {
     fetchTrackingData()
@@ -35,54 +47,80 @@ const OrderPage = () => {
     setIsLoading(false)
   }, [])
 
-  const onRefresh = useCallback((done) => {
-    fetchTrackingData().then(done)
-  }, [fetchTrackingData])
+  const onRefresh = useCallback(
+    done => {
+      fetchTrackingData().then(done)
+    },
+    [fetchTrackingData]
+  )
 
-  const onItemPress = useCallback((item) => {
-    setSelectedDetails(item)
-    bottomSheetRef.current?.open()
-  }, [])
+  const onItemPress = item => {
+    f7router.navigate(`/orderdetails/${JSON.stringify(item)}`)
+    console.log(item);
+  }
 
-  const renderItem = useCallback((item) => {
-    const CardComponent = item.status === 'In Process' ? InProcessCard : TrackingCard
-    return <CardComponent key={item.memeID} item={item} onClick={() => onItemPress(item)} />
-  }, [onItemPress])
+  const renderItem = useCallback(
+    item => {
+      const CardComponent =
+        item.status === 'In Process' ? InProcessCard : TrackingCard
+      return (
+        <CardComponent
+          key={item.memeID}
+          item={item}
+          onPress={() => onItemPress(item)}
+        />
+      )
+    },
+    [onItemPress]
+  )
 
-  const renderSection = useCallback((title, data) => (
-    <>
-      <BlockTitle>{data.length === 0 && title === 'In Process' ? 'No In Process Records' : title}</BlockTitle>
-      <List className="no-markers">{data.map(item => renderItem(item))}</List>
-    </>
-  ), [renderItem])
+  const renderSection = useCallback(
+    (title, data) => (
+      <>
+        <BlockTitle>
+          {data.length === 0 && title === 'In Process'
+            ? 'No In Process Records'
+            : title}
+        </BlockTitle>
+        <List className='no-markers'>{data.map(item => renderItem(item))}</List>
+      </>
+    ),
+    [renderItem]
+  )
 
   return (
     <Page ptr ptrMousewheel={true} onPtrRefresh={onRefresh}>
-      <Navbar title="Orders" backLink="Back" />
+      <Navbar title='Orders' backLink='Back' />
       {isLoading ? (
         <Block>
-          <List strongIos outlineIos dividersIos mediaList className="skeleton-text">
-        <ListItem
-          title="Title"
-          subtitle="Subtitle"
-          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi lobortis et massa ac interdum."
-        >
-          <SkeletonBlock
-            style={{ width: '40px', height: '40px', borderRadius: '50%' }}
-            slot="media"
-          />
-        </ListItem>
-        <ListItem
-          title="Title"
-          subtitle="Subtitle"
-          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi lobortis et massa ac interdum."
-        >
-          <SkeletonBlock
-            style={{ width: '40px', height: '40px', borderRadius: '50%' }}
-            slot="media"
-          />
-        </ListItem>
-      </List>
+          <List
+            strongIos
+            outlineIos
+            dividersIos
+            mediaList
+            className='skeleton-text'
+          >
+            <ListItem
+              title='Title'
+              subtitle='Subtitle'
+              text='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi lobortis et massa ac interdum.'
+            >
+              <SkeletonBlock
+                style={{ width: '40px', height: '40px', borderRadius: '50%' }}
+                slot='media'
+              />
+            </ListItem>
+            <ListItem
+              title='Title'
+              subtitle='Subtitle'
+              text='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi lobortis et massa ac interdum.'
+            >
+              <SkeletonBlock
+                style={{ width: '40px', height: '40px', borderRadius: '50%' }}
+                slot='media'
+              />
+            </ListItem>
+          </List>
         </Block>
       ) : (
         <>

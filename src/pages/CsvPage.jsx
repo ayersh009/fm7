@@ -105,7 +105,7 @@ const CsvPage = ({f7router}) => {
   };
 
   const handleItemClick = item => {
-    f7router.navigate(`/detail/${JSON.stringify(item)}`);
+    f7router.navigate(`/orderdetails/${JSON.stringify(item)}`);
   };
 
   return (
@@ -159,7 +159,7 @@ const CsvPage = ({f7router}) => {
         </View>
       </Panel>
 
-      <Navbar title="CSV Data" backLink="Back">
+      <Navbar title="Stock Report" backLink="Back">
         <NavRight>
           <Link iconF7="funnel" onClick={() => setFilterPanelOpened(true)} />
         </NavRight>

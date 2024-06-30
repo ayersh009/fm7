@@ -17,7 +17,7 @@ const getStatusProperties = status => {
       }
     case 'Reported':
       return {
-        icon: 'box',
+        icon: 'f7bolt_circle_fill',
         iconColor: '#F0F0F0',
         statusColor: '#653FF7'
       }
@@ -42,7 +42,7 @@ const TrackingCard = ({ item, onPress }) => {
       footer={item.destination}
       after={item.status}
     >
-      <Icon slot='media' f7={icon} color={iconColor} />
+      <Icon slot='media' f7={icon} color={statusColor} />
     </ListItem>
   )
 }

@@ -4,7 +4,7 @@
     "capacitor",
     "pwa"
   ],
-  "name": "My App",
+  "name": "Inventify",
   "framework": "react",
   "template": "tabs",
   "bundler": "vite",
