@@ -1,11 +1,8 @@
 import React from 'react';
 import { Page, Navbar, Block, BlockTitle } from 'framework7-react';
-import { useStore } from 'framework7-react';
 
 const OrderDetailsPage = ({ f7route }) => {
-  const memeID = f7route.params.id;
-  const getOrderById = useStore('getOrderById');
-  const order = getOrderById(memeID);
+  const order = JSON.parse(decodeURIComponent(f7route.params.order));
 
   if (!order) {
     return (
@@ -16,14 +13,20 @@ const OrderDetailsPage = ({ f7route }) => {
     );
   }
 
+  const renderOrderDetails = () => {
+    return Object.keys(order).map((key) => (
+      <p key={key}>
+        <strong>{key.replace(/_/g, ' ')}:</strong> {order[key]}
+      </p>
+    ));
+  };
+
   return (
     <Page>
-      <Navbar title={`Order #${order.memeID}`} backLink="Back" />
+      <Navbar title={`#${order.vehicleno}`} backLink="Back" />
       <Block strong>
         <BlockTitle>Order Details</BlockTitle>
-        <p><strong>Date:</strong> {new Date(order.orderdate).toLocaleDateString()}</p>
-        <p><strong>Details:</strong> {order.details}</p>
-        {/* Add more fields as needed */}
+        {renderOrderDetails()}
       </Block>
     </Page>
   );

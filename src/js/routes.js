@@ -21,7 +21,7 @@ var routes = [
     component: HomePage,
   },
   {
-    path: '/orderdetails/:memeID',
+    path: '/orderdetails/:order',
     component: OrderDetailsPage,
   },
 

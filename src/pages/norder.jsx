@@ -1,36 +1,100 @@
-import React, { useEffect } from 'react';
-import { Page, Navbar, List, ListItem, Block,useStore } from 'framework7-react';
-//import { useStore } from 'framework7-react';
+import React, { useState, useEffect } from 'react';
+import {
+  Page,
+  Navbar,
+  List,
+  ListItem,
+  Block,
+  Segmented,
+  Button,
+  Subnavbar,
+  BlockTitle,
+  useStore
+} from 'framework7-react';
 import store from '../js/store';
 
 const OrderListPage = ({ f7router }) => {
   const orders = useStore('orders');
+  const [filter, setFilter] = useState('All');
 
   useEffect(() => {
     store.dispatch('fetchOrders');
   }, []);
 
+  const filteredOrders = orders.filter(
+    order => filter === 'All' || order.status === filter
+  );
 
-  const navigateToOrderDetails = async (memeID) => {
-    const order = await store.dispatch('fetchOrderById', memeID);
-    f7router.navigate(`/orderdetails/${memeID}`, { props: { order } });
-  };
+  const today = new Date().setHours(0, 0, 0, 0);
+
+  const ordersToday = filteredOrders.filter(order => {
+    const orderDate = new Date(order.orderdate).setHours(0, 0, 0, 0);
+    return orderDate === today;
+  });
+
+  const ordersOlder = filteredOrders.filter(order => {
+    const orderDate = new Date(order.orderdate).setHours(0, 0, 0, 0);
+    return orderDate < today;
+  });
+
+  const renderOrderList = orders => (
+    <List>
+      {orders.map(order => (
+        <ListItem
+          key={order.memeID}
+          link={`/orderdetails/${encodeURIComponent(JSON.stringify(order))}`}
+          chevronCenter
+          subtitle={order.status}
+          header={new Date(order.orderdate).toLocaleDateString()}
+          title={order.vehicleno}
+          footer={order.destination}
+          after={order.status}
+        />
+      ))}
+    </List>
+  );
 
   return (
     <Page>
-      <Navbar title="Orders" />
+      <Navbar title='Orders' backLink='Back' />
+      <Subnavbar>
+        <Segmented strong>
+          <Button active={filter === 'All'} onClick={() => setFilter('All')}>
+            All
+          </Button>
+          <Button
+            active={filter === 'Reported'}
+            onClick={() => setFilter('Reported')}
+          >
+            Reported
+          </Button>
+          <Button
+            active={filter === 'Loaded'}
+            onClick={() => setFilter('Loaded')}
+          >
+            Loaded
+          </Button>
+          <Button
+            active={filter === 'In Process'}
+            onClick={() => setFilter('In Process')}
+          >
+            In Process
+          </Button>
+        </Segmented>
+      </Subnavbar>
       <Block strong>
-        <List>
-          {orders.map(order => (
-            <ListItem
-              key={order.memeID}
-              title={`Order #${order.memeID}`}
-              after={new Date(order.orderdate).toLocaleDateString()}
-              link={`/orderdetails/${order.memeID}`}
-              onClick={() => navigateToOrderDetails(order.memeID)}
-            />
-          ))}
-        </List>
+        <BlockTitle>Today</BlockTitle>
+        {ordersToday.length > 0 ? (
+          renderOrderList(ordersToday)
+        ) : (
+          <Block>No orders for today.</Block>
+        )}
+        <BlockTitle>Older than Today</BlockTitle>
+        {ordersOlder.length > 0 ? (
+          renderOrderList(ordersOlder)
+        ) : (
+          <Block>No older orders.</Block>
+        )}
       </Block>
     </Page>
   );
