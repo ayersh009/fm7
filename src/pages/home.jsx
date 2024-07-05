@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
   Page,
   Navbar,
@@ -14,21 +14,25 @@ import {
   Icon,
   ListItem,
   Button,
-  f7
+  f7,
+  useStore
 } from 'framework7-react'
 import { App as CapacitorApp } from '@capacitor/app'
 
 const handleExitApp = () => {
-  f7.dialog.confirm('Are you sure you want to exit the app?', 'Exit App', () => {
-    CapacitorApp.exitApp();
-  });
-};
+  f7.dialog.confirm(
+    'Are you sure you want to exit the app?',
+    'Exit App',
+    () => {
+      CapacitorApp.exitApp()
+    }
+  )
+}
 
 const HomePage = () => (
   <Page name='home'>
     {/* Top Navbar */}
     <Navbar sliding={true}>
-      
       <NavTitle sliding>Inventify</NavTitle>
       <NavRight>
         <Link
@@ -49,10 +53,9 @@ const HomePage = () => (
     <List strong inset dividersIos>
       {/* <ListItem link="/about/" title="About"/>
       <ListItem link="/form/" title="Form"/> */}
-      <ListItem link='/csv/' title='Stock Report' badge="New"/>
+      <ListItem link='/csv/' title='Stock Report' badge='New' />
       <ListItem link='/move/' title='Move Pallet' />
       <ListItem link='/order/' title='Order Manager' />
-      
     </List>
 
     {/* <BlockTitle>Modals</BlockTitle>

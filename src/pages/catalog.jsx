@@ -1,36 +1,53 @@
-import React from 'react';
-import { Page, Navbar, List, ListItem, Block, Button, useStore } from 'framework7-react';
-import store from '../js/store';
+import React, { useEffect, useState } from 'react';
+import { Page, Navbar, List, ListItem, Searchbar,Subnavbar } from 'framework7-react';
 
-const CatalogPage = () => {
-  const products = useStore('products');
+const ProductListPage = () => {
+  const [products, setProducts] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
 
-  const addProduct = () => {
-    store.dispatch('addProduct', {
-      id: '4',
-      title: 'Apple iPhone 12',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi tempora similique reiciendis, error nesciunt vero, blanditiis pariatur dolor, minima sed sapiente rerum, dolorem corrupti hic modi praesentium unde saepe perspiciatis.',
-    });
-  };
+  useEffect(() => {
+    // Fetch data from localStorage
+    const storedData = localStorage.getItem('csvData');
+    if (storedData) {
+      const parsedData = JSON.parse(storedData);
+
+      // Remove duplicates based on Product_Code
+      const uniqueProducts = Array.from(new Map(parsedData.map(item => [item.Product_Code, item])).values());
+
+      setProducts(uniqueProducts);
+    }
+  }, []);
+
+  // Filter products based on search query
+  const filteredProducts = products.filter(product =>
+    product.Product_Description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    product.Product_Code.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
-    <Page name="catalog">
-      <Navbar title="Catalog" />
-      <List strong dividersIos outlineIos insetMd>
-        {products.map((product) => (
-          <ListItem key={product.id} title={product.title} link={`/product/${product.id}/`} />
+    <Page>
+      <Navbar title="Product List" >
+      <Subnavbar inner={false}>
+      <Searchbar
+        placeholder="Search products..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        onSearchbarClear={() => setSearchQuery('')}
+        //clearButton
+      />
+      </Subnavbar>
+      </Navbar>
+      <List mediaList>
+        {filteredProducts.map((product, index) => (
+          <ListItem
+            key={index}
+            text={product.Product_Description}
+            title={product.Product_Code}
+          />
         ))}
       </List>
-      {products.length === 3 && (
-        <Block>
-          <Button fill onClick={addProduct}>
-            Add Product
-          </Button>
-        </Block>
-      )}
     </Page>
   );
 };
 
-export default CatalogPage;
+export default ProductListPage;

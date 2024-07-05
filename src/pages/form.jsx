@@ -15,7 +15,7 @@ import {
 const FormPage = () => (
   <Page name="form">
     <Navbar title="Form" backLink="Back"></Navbar>
-
+    
     <BlockTitle>Form Example</BlockTitle>
     <List strongIos outlineIos dividersIos>
       <ListInput label="Name" type="text" placeholder="Your name"></ListInput>

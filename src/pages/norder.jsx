@@ -1,135 +1,39 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react'
-import {
-  Page,
-  List,
-  BlockTitle,
-  Navbar,
-  Preloader,
-  SkeletonBlock,
-  Block,
-  SkeletonText,
-  ListItem
-} from 'framework7-react'
-import { supabase } from '../components/supabase'
-import TrackingCard from '../components/trackingcard'
-import InProcessCard from '../components/inprocesscard'
-import './orderp.css' // Assuming you save your CSS in OrderPage.css
+import React, { useEffect } from 'react';
+import { Page, Navbar, List, ListItem, Block,useStore } from 'framework7-react';
+//import { useStore } from 'framework7-react';
+import store from '../js/store';
 
-const OrderPage = ({ f7router }) => {
-  const [trackingData, setTrackingData] = useState({
-    inProcess: [],
-    others: []
-  })
-  const [isRefreshing, setIsRefreshing] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
-  const [selectedDetails, setSelectedDetails] = useState(null)
+const OrderListPage = ({ f7router }) => {
+  const orders = useStore('orders');
 
   useEffect(() => {
-    fetchTrackingData()
-  }, [])
+    store.dispatch('fetchOrders');
+  }, []);
 
-  const fetchTrackingData = useCallback(async () => {
-    setIsRefreshing(true)
-    const { data, error } = await supabase
-      .from('ordermanager')
-      .select('*')
-      .order('orderdate', { ascending: false })
 
-    if (error) {
-      console.error('Error fetching data:', error)
-    } else {
-      const inProcess = data.filter(item => item.status === 'In Process')
-      const others = data.filter(item => item.status !== 'In Process')
-
-      setTrackingData({ inProcess, others })
-    }
-    setIsRefreshing(false)
-    setIsLoading(false)
-  }, [])
-
-  const onRefresh = useCallback(
-    done => {
-      fetchTrackingData().then(done)
-    },
-    [fetchTrackingData]
-  )
-
-  const onItemPress = item => {
-    f7router.navigate(`/orderdetails/${JSON.stringify(item)}`)
-    console.log(item);
-  }
-
-  const renderItem = useCallback(
-    item => {
-      const CardComponent =
-        item.status === 'In Process' ? InProcessCard : TrackingCard
-      return (
-        <CardComponent
-          key={item.memeID}
-          item={item}
-          onPress={() => onItemPress(item)}
-        />
-      )
-    },
-    [onItemPress]
-  )
-
-  const renderSection = useCallback(
-    (title, data) => (
-      <>
-        <BlockTitle>
-          {data.length === 0 && title === 'In Process'
-            ? 'No In Process Records'
-            : title}
-        </BlockTitle>
-        <List className='no-markers'>{data.map(item => renderItem(item))}</List>
-      </>
-    ),
-    [renderItem]
-  )
+  const navigateToOrderDetails = async (memeID) => {
+    const order = await store.dispatch('fetchOrderById', memeID);
+    f7router.navigate(`/orderdetails/${memeID}`, { props: { order } });
+  };
 
   return (
-    <Page ptr ptrMousewheel={true} onPtrRefresh={onRefresh}>
-      <Navbar title='Orders' backLink='Back' />
-      {isLoading ? (
-        <Block>
-          <List
-            strongIos
-            outlineIos
-            dividersIos
-            mediaList
-            className='skeleton-text'
-          >
+    <Page>
+      <Navbar title="Orders" />
+      <Block strong>
+        <List>
+          {orders.map(order => (
             <ListItem
-              title='Title'
-              subtitle='Subtitle'
-              text='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi lobortis et massa ac interdum.'
-            >
-              <SkeletonBlock
-                style={{ width: '40px', height: '40px', borderRadius: '50%' }}
-                slot='media'
-              />
-            </ListItem>
-            <ListItem
-              title='Title'
-              subtitle='Subtitle'
-              text='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi lobortis et massa ac interdum.'
-            >
-              <SkeletonBlock
-                style={{ width: '40px', height: '40px', borderRadius: '50%' }}
-                slot='media'
-              />
-            </ListItem>
-          </List>
-        </Block>
-      ) : (
-        <>
-          {renderSection('In Process', trackingData.inProcess)}
-          {renderSection('Others', trackingData.others)}
-        </>
-      )}
+              key={order.memeID}
+              title={`Order #${order.memeID}`}
+              after={new Date(order.orderdate).toLocaleDateString()}
+              link={`/orderdetails/${order.memeID}`}
+              onClick={() => navigateToOrderDetails(order.memeID)}
+            />
+          ))}
+        </List>
+      </Block>
     </Page>
-  )
-}
+  );
+};
 
-export default OrderPage
+export default OrderListPage;

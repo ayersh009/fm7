@@ -1,7 +1,7 @@
 {
-  "name": "My App",
-  "short_name": "My App",
-  "description": "My App",
+  "name": "Inventify",
+  "short_name": "Inventify",
+  "description": "Inventify",
   "lang": "en-US",
   "start_url": "/",
   "display": "standalone",

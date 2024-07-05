@@ -1,8 +1,8 @@
 {
-  "name": "my-app",
+  "name": "inventify",
   "private": true,
   "version": "1.0.0",
-  "description": "My App",
+  "description": "inventify",
   "repository": "",
   "license": "UNLICENSED",
   "scripts": {

@@ -1,19 +1,32 @@
 import React from 'react';
-import { Page, Navbar, Block } from 'framework7-react';
+import { Page, Navbar, Block, BlockTitle } from 'framework7-react';
+import { useStore } from 'framework7-react';
 
-const DetailsPage = ({ f7route }) => {
-    const item = f7route.params.item ? JSON.parse(f7route.params.item) : {};
+const OrderDetailsPage = ({ f7route }) => {
+  const memeID = f7route.params.id;
+  const getOrderById = useStore('getOrderById');
+  const order = getOrderById(memeID);
+
+  if (!order) {
+    return (
+      <Page>
+        <Navbar title="Order Details" backLink="Back" />
+        <Block strong>No order details available.</Block>
+      </Page>
+    );
+  }
 
   return (
     <Page>
-      <Navbar title="Details" backLink="Back" />
-      <Block>
-        <h2>{item.orderdate}</h2>
-        <p>{item.vehicle}</p>
-        {/* Add more details here based on your item structure */}
+      <Navbar title={`Order #${order.memeID}`} backLink="Back" />
+      <Block strong>
+        <BlockTitle>Order Details</BlockTitle>
+        <p><strong>Date:</strong> {new Date(order.orderdate).toLocaleDateString()}</p>
+        <p><strong>Details:</strong> {order.details}</p>
+        {/* Add more fields as needed */}
       </Block>
     </Page>
   );
 };
 
-export default DetailsPage;
+export default OrderDetailsPage;

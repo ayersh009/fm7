@@ -3,7 +3,7 @@ import { Page, Navbar, Block, BlockTitle } from 'framework7-react'
 
 const ComingSoonPage = () => (
   <Page>
-    <Navbar title='Coming Soon' backLink='Back' />
+    <Navbar title='Coming Soon' />
     <BlockTitle>Stay Tuned!</BlockTitle>
     <Block>
       <p>We're working hard to bring you an amazing experience. Our new feature/app will be launching soon. Stay tuned for updates!</p>

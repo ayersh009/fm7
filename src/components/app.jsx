@@ -24,8 +24,6 @@ import {
   BlockFooter
 } from 'framework7-react'
 
-
-
 import capacitorApp from '../js/capacitor-app'
 import routes from '../js/routes'
 import store from '../js/store'
@@ -37,6 +35,7 @@ const MyApp = () => {
   const device = getDevice()
 
   
+
   // Framework7 Parameters
   const f7params = {
     name: 'Inventify', // App name
@@ -88,7 +87,6 @@ const MyApp = () => {
   return (
     <App {...f7params}>
       {/* Left panel with cover effect*/}
-      
 
       {/* Right panel with reveal effect*/}
 
@@ -107,7 +105,7 @@ const MyApp = () => {
             tabLink='#view-catalog'
             iconIos='f7:square_list_fill'
             iconMd='material:view_list'
-            text='Catalog'
+            text='Products'
           />
           <Link
             tabLink='#view-settings'
@@ -126,7 +124,6 @@ const MyApp = () => {
         {/* Settings View */}
         <View id='view-settings' name='settings' tab url='/settings/' />
       </Views>
-
 
       <LoginScreen id='my-login-screen'>
         <View>

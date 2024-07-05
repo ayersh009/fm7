@@ -51,8 +51,8 @@ const DetailPage = ({ f7route }) => {
             key={index}
             header={key}
             title={item[key] || '-'}
-            style={key === 'Hold_Remarks' ? { whiteSpace: 'normal' } : {}}
-            titleStyle={key === 'Hold_Remarks' ? getStyleForHoldRemarks(item[key]) : {}}
+           // style={key === 'Hold_Remarks' ? { whiteSpace: 'normal' } : {}}
+            //titleStyle={key === 'Hold_Remarks' ? getStyleForHoldRemarks(item[key]) : {}}
           />
         ))}
       </List>

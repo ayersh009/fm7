@@ -12,13 +12,17 @@ import NotFoundPage from '../pages/404.jsx';
 import CsvPage from '../pages/CsvPage.jsx'
 import MovePage from '../pages/move.jsx'
 import OrderPage from '../pages/norder.jsx';
-import DetailPage from '../pages/DetailPage.jsx';
+import DetailPage from '../pages/palletdetails.jsx';
 import OrderDetailsPage from '../pages/orderdetails.jsx';
 
 var routes = [
   {
     path: '/',
     component: HomePage,
+  },
+  {
+    path: '/orderdetails/:memeID',
+    component: OrderDetailsPage,
   },
 
   {

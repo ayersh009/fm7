@@ -30,13 +30,15 @@ const getStatusProperties = status => {
   }
 }
 
+
+
 const TrackingCard = ({ item, onPress }) => {
   const { icon, iconColor, statusColor } = getStatusProperties(item.status)
 
   return (
     <ListItem
       onClick={onPress}
-      link='#'
+      link='/orderdetails/'
       header={item.orderdate}
       title={item.vehicleno}
       footer={item.destination}

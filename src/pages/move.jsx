@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import {
   Page,
   Navbar,
@@ -8,98 +8,85 @@ import {
   Button,
   Preloader,
   f7
-} from 'framework7-react'
+} from 'framework7-react';
 
 const SubmitPage = () => {
-  const [palletNo, setPalletNo] = useState('')
-  const [newLocation, setNewLocation] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [items, setItems] = useState([])
+  const [palletNo, setPalletNo] = useState('');
+  const [newLocation, setNewLocation] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [items, setItems] = useState([]);
 
   useEffect(() => {
-    // Load saved items from local storage when the component mounts
-    const savedItems = JSON.parse(localStorage.getItem('items')) || []
-    setItems(savedItems)
-  }, [])
+    const savedItems = JSON.parse(localStorage.getItem('items')) || [];
+    setItems(savedItems);
+  }, []);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!palletNo || !newLocation) {
       f7.toast
         .create({
           text: 'Both fields are required',
           closeButton: true
         })
-        .open()
-      return
+        .open();
+      return;
     }
 
-    setLoading(true) // Set loading state to true when the request starts
+    setLoading(true);
 
-    const data = {
-      palletNo,
-      newLocation
-    }
+    const url = `https://script.google.com/macros/s/AKfycbxbuYB8HzpdIBzxQtTrduGFXAG55Bxfv_OhYzEUQOdVnxVs792Y66l70ji6DSqoKk4A1g/exec?palletNo=${encodeURIComponent(palletNo)}&newLocation=${encodeURIComponent(newLocation)}`;
 
-    fetch(
-      'https://script.google.com/macros/s/AKfycbxbuYB8HzpdIBzxQtTrduGFXAG55Bxfv_OhYzEUQOdVnxVs792Y66l70ji6DSqoKk4A1g/exec',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+
+      setLoading(false);
+
+      f7.toast
+        .create({
+          text: data.message,
+          closeButton: true
+        })
+        .open();
+
+      if (data.message === 'Location updated successfully') {
+        const newItem = { palletNo, newLocation };
+        const updatedItems = [...items, newItem];
+        setItems(updatedItems);
+        localStorage.setItem('items', JSON.stringify(updatedItems));
+
+        setPalletNo('');
+        setNewLocation('');
       }
-    )
-      .then(response => response.json())
-      .then(data => {
-        setLoading(false) // Set loading state to false when the request finishes
-        f7.toast
-          .create({
-            text: data.message || 'Submission successful!',
-            closeButton: true
-          })
-          .open()
-
-        // Save the new item to local storage
-        const newItem = { palletNo, newLocation }
-        const updatedItems = [...items, newItem]
-        setItems(updatedItems)
-        localStorage.setItem('items', JSON.stringify(updatedItems))
-
-        // Clear the input fields
-        setPalletNo('')
-        setNewLocation('')
-      })
-      .catch(error => {
-        setLoading(false) // Set loading state to false if the request fails
-        console.error('Error:', error)
-        f7.toast
-          .create({
-            text: 'Submission failed, please try again.',
-            closeButton: true
-          })
-          .open()
-      })
-  }
+    } catch (error) {
+      setLoading(false);
+      console.error('Error:', error);
+      f7.toast
+        .create({
+          text: 'An error occurred, please try again.',
+          closeButton: true
+        })
+        .open();
+    }
+  };
 
   return (
     <Page>
-      <Navbar title='Move Pallet' backLink='Back' />
-
+      <Navbar title="Move Pallet" backLink="Back" />
       <List strongIos outlineIos dividersIos>
         <ListInput
-          label='Pallet No'
-          type='text'
-          placeholder='Enter Pallet No'
+          label="Pallet No"
+          type="text"
+          placeholder="Enter Pallet No"
           value={palletNo}
-          onInput={e => setPalletNo(e.target.value)}
+          onInput={(e) => setPalletNo(e.target.value)}
         />
         <ListInput
-          label='New Location'
-          type='text'
-          placeholder='Enter New Location'
+          label="New Location"
+          type="text"
+          placeholder="Enter New Location"
           value={newLocation}
-          onInput={e => setNewLocation(e.target.value)}
+          onInput={(e) => setNewLocation(e.target.value)}
         />
       </List>
       <Block>
@@ -112,7 +99,7 @@ const SubmitPage = () => {
         >
           {loading ? (
             <>
-              <Preloader color='white' /> Submitting...
+              <Preloader color="white" /> Submitting...
             </>
           ) : (
             'Submit'
@@ -123,7 +110,7 @@ const SubmitPage = () => {
       <Block>
         <List>
           {items.map((item, index) => (
-            <li key={index}>
+            <li key={index} style={{ margin: '10px 0' }}>
               <div>Pallet No: {item.palletNo}</div>
               <div>New Location: {item.newLocation}</div>
             </li>
@@ -131,7 +118,7 @@ const SubmitPage = () => {
         </List>
       </Block>
     </Page>
-  )
-}
+  );
+};
 
-export default SubmitPage
+export default SubmitPage;

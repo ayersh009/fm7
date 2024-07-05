@@ -1,58 +1,44 @@
+import { createStore } from 'framework7/lite'
+import Papa from 'papaparse'
+import { supabase } from '../components/supabase'
 
-import { createStore } from 'framework7/lite';
-import Papa from 'papaparse';
 
 const store = createStore({
   state: {
-    products: [
-      {
-        id: '1',
-        title: 'Apple iPhone 8',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi tempora similique reiciendis, error nesciunt vero, blanditiis pariatur dolor, minima sed sapiente rerum, dolorem corrupti hic modi praesentium unde saepe perspiciatis.'
-      },
-      {
-        id: '2',
-        title: 'Apple iPhone 8 Plus',
-        description: 'Velit odit autem modi saepe ratione totam minus, aperiam, labore quia provident temporibus quasi est ut aliquid blanditiis beatae suscipit odio vel! Nostrum porro sunt sint eveniet maiores, dolorem itaque!'
-      },
-      {
-        id: '3',
-        title: 'Apple iPhone X',
-        description: 'Expedita sequi perferendis quod illum pariatur aliquam, alias laboriosam! Vero blanditiis placeat, mollitia necessitatibus reprehenderit. Labore dolores amet quos, accusamus earum asperiores officiis assumenda optio architecto quia neque, quae eum.'
-      },
-    ],
-    csvData: [],
+    orders: []
   },
   getters: {
-    products({ state }) {
-      return state.products;
+    orders({ state }) {
+      return state.orders;
     },
-    csvData({ state }) {
-      return state.csvData;
-    },
-  },
-  actions: {
-    addProduct({ state }, product) {
-      state.products = [...state.products, product];
-    },
-    async fetchCsvData({ state }) {
-      const csvurl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQt0HJ_mtSACZ88zpfjScQNNmzlqnvGJocVMIaC-MJ_hX4LCfd5VWrZRkPDI37e1VWuDszlw-789W6v/pub?gid=854843404&single=true&output=csv';
-      try {
-        const response = await fetch(csvurl);
-        const csvText = await response.text();
-        Papa.parse(csvText, {
-          header: true,
-          complete: results => {
-            state.csvData = results.data;
-          },
-          error: err => {
-            console.error(err.message);
-          }
-        });
-      } catch (error) {
-        console.error('Error fetching CSV data:', error);
-      }
+    getOrderById: (state) => (memeID) => {
+      return state.orders.find(order => order.memeID === memeID);
     }
   },
-})
-export default store;
+  actions: {
+    async fetchOrders({ state }) {
+      const { data, error } = await supabase
+        .from('ordermanager')
+        .select('*')
+        .order('orderdate', { ascending: false });
+      if (error) {
+        console.error('Error fetching orders:', error);
+      } else {
+        state.orders = data;
+      }
+    },
+    async fetchOrderById({ state }, memeID) {
+      const { data, error } = await supabase
+        .from('ordermanager')
+        .select('*')
+        .eq('memeID', memeID)
+        .single();
+      if (error) {
+        console.error('Error fetching order details:', error);
+      }
+      return data;
+    }
+  }
+});
+
+export default store

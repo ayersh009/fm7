@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react'
 import {
   Page,
   Navbar,
@@ -14,31 +14,31 @@ import {
   ListInput,
   Subnavbar,
   NavRight
-} from 'framework7-react';
-import Papa from 'papaparse';
+} from 'framework7-react'
+import Papa from 'papaparse'
 
 const csvurl =
-  'https://docs.google.com/spreadsheets/d/e/2PACX-1vQt0HJ_mtSACZ88zpfjScQNNmzlqnvGJocVMIaC-MJ_hX4LCfd5VWrZRkPDI37e1VWuDszlw-789W6v/pub?gid=854843404&single=true&output=csv';
+  'https://docs.google.com/spreadsheets/d/e/2PACX-1vQt0HJ_mtSACZ88zpfjScQNNmzlqnvGJocVMIaC-MJ_hX4LCfd5VWrZRkPDI37e1VWuDszlw-789W6v/pub?gid=854843404&single=true&output=csv'
 
-const CsvPage = ({f7router}) => {
-  const [data, setData] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [filterPanelOpened, setFilterPanelOpened] = useState(false);
-  const [filterProductCode, setFilterProductCode] = useState('');
-  const [filterStatus, setFilterStatus] = useState('');
+const CsvPage = ({ f7router }) => {
+  const [data, setData] = useState([])
+  const [searchQuery, setSearchQuery] = useState('')
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const [filterPanelOpened, setFilterPanelOpened] = useState(false)
+  const [filterProductCode, setFilterProductCode] = useState('')
+  const [filterStatus, setFilterStatus] = useState('')
 
-  const localStorageKey = 'csvData';
+  const localStorageKey = 'csvData'
 
   const fetchData = (refresh = false, done = () => {}) => {
     if (!refresh) {
-      const savedData = localStorage.getItem(localStorageKey);
+      const savedData = localStorage.getItem(localStorageKey)
       if (savedData) {
-        setData(JSON.parse(savedData));
-        setLoading(false);
-        done();
-        return;
+        setData(JSON.parse(savedData))
+        setLoading(false)
+        done()
+        return
       }
     }
 
@@ -46,34 +46,34 @@ const CsvPage = ({f7router}) => {
       download: true,
       header: true,
       complete: results => {
-        setData(results.data);
-        localStorage.setItem(localStorageKey, JSON.stringify(results.data));
-        setLoading(false);
-        done();
+        setData(results.data)
+        localStorage.setItem(localStorageKey, JSON.stringify(results.data))
+        setLoading(false)
+        done()
       },
       error: err => {
-        setError(err.message);
-        setLoading(false);
-        done();
+        setError(err.message)
+        setLoading(false)
+        done()
       }
-    });
-  };
+    })
+  }
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    fetchData()
+  }, [])
 
   const handlePullToRefresh = done => {
-    fetchData(true, done);
-  };
+    fetchData(true, done)
+  }
 
   const uniqueValues = field => {
-    const values = data.map(item => item[field]);
-    return [...new Set(values)];
-  };
+    const values = data.map(item => item[field])
+    return [...new Set(values)]
+  }
 
-  const productCodes = useMemo(() => uniqueValues('Product_Code'), [data]);
-  const statuses = useMemo(() => uniqueValues('Status'), [data]);
+  const productCodes = useMemo(() => uniqueValues('Product_Code'), [data])
+  const statuses = useMemo(() => uniqueValues('Status'), [data])
 
   const filteredData = useMemo(() => {
     return data
@@ -84,10 +84,11 @@ const CsvPage = ({f7router}) => {
       )
       .filter(
         item =>
-          (filterProductCode ? item.Product_Code === filterProductCode : true) &&
-          (filterStatus ? item.Status === filterStatus : true)
-      );
-  }, [data, searchQuery, filterProductCode, filterStatus]);
+          (filterProductCode
+            ? item.Product_Code === filterProductCode
+            : true) && (filterStatus ? item.Status === filterStatus : true)
+      )
+  }, [data, searchQuery, filterProductCode, filterStatus])
 
   const columnsToDisplay = [
     'Pallet_No',
@@ -95,18 +96,19 @@ const CsvPage = ({f7router}) => {
     'Balance',
     'Product_Code',
     'MFG_Date'
-  ];
+  ]
 
   const getItemStyle = status => {
     if (status === 'HOLD' || status === 'WIP') {
-      return { backgroundColor: 'lightcoral' };
+      return { backgroundColor: '#ffbaba' }
     }
-    return {};
-  };
+    return {}
+  }
 
   const handleItemClick = item => {
-    f7router.navigate(`/orderdetails/${JSON.stringify(item)}`);
-  };
+    f7router.navigate(`/detail/${JSON.stringify(item)}`)
+    //console.log(`/detail/${JSON.stringify(item)}`)
+  }
 
   return (
     <Page ptr ptrMousewheel={true} onPtrRefresh={handlePullToRefresh}>
@@ -119,16 +121,16 @@ const CsvPage = ({f7router}) => {
       >
         <View>
           <Page>
-            <Navbar title="Filter" />
+            <Navbar title='Filter' />
             <List>
               <ListInput
-                label="Product Code"
-                type="select"
-                placeholder="Select Product Code"
+                label='Product Code'
+                type='select'
+                placeholder='Select Product Code'
                 value={filterProductCode}
                 onInput={e => setFilterProductCode(e.target.value)}
               >
-                <option value="">All</option>
+                <option value=''>All</option>
                 {productCodes.map((code, index) => (
                   <option key={index} value={code}>
                     {code}
@@ -136,13 +138,13 @@ const CsvPage = ({f7router}) => {
                 ))}
               </ListInput>
               <ListInput
-                label="Status"
-                type="select"
-                placeholder="Select Status"
+                label='Status'
+                type='select'
+                placeholder='Select Status'
                 value={filterStatus}
                 onInput={e => setFilterStatus(e.target.value)}
               >
-                <option value="">All</option>
+                <option value=''>All</option>
                 {statuses.map((status, index) => (
                   <option key={index} value={status}>
                     {status}
@@ -159,9 +161,9 @@ const CsvPage = ({f7router}) => {
         </View>
       </Panel>
 
-      <Navbar title="Stock Report" backLink="Back">
+      <Navbar title='Stock Report' backLink='Back'>
         <NavRight>
-          <Link iconF7="funnel" onClick={() => setFilterPanelOpened(true)} />
+          <Link iconF7='funnel' onClick={() => setFilterPanelOpened(true)} />
         </NavRight>
         <Subnavbar inner={false}>
           <Searchbar
@@ -169,18 +171,18 @@ const CsvPage = ({f7router}) => {
             onChange={e => setSearchQuery(e.target.value)}
             onSearchbarClear={() => setSearchQuery('')}
             value={searchQuery}
-            placeholder="Search"
+            placeholder='Search'
             noShadow
           />
         </Subnavbar>
       </Navbar>
 
       {loading ? (
-        <Block className="text-align-center">
-          <Preloader color="multi" />
+        <Block className='text-align-center'>
+          <Preloader color='multi' />
         </Block>
       ) : error ? (
-        <Block className="text-align-center">
+        <Block className='text-align-center'>
           <p>Error: {error}</p>
         </Block>
       ) : (
@@ -188,7 +190,7 @@ const CsvPage = ({f7router}) => {
           {filteredData.map((item, index) => (
             <ListItem
               key={index}
-              link="#"
+              link='#'
               title={columnsToDisplay.map(col => item[col]).join(' • ')}
               style={getItemStyle(item.Status)}
               onClick={() => handleItemClick(item)}
@@ -197,7 +199,7 @@ const CsvPage = ({f7router}) => {
         </List>
       )}
     </Page>
-  );
-};
+  )
+}
 
-export default CsvPage;
+export default CsvPage
