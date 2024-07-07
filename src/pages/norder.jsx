@@ -89,13 +89,17 @@ const OrderListPage = ({ f7router }) => {
         ) : (
           <Block>No orders for today.</Block>
         )}
+         </Block>
+        <Block strong>
         <BlockTitle>Older than Today</BlockTitle>
-        {ordersOlder.length > 0 ? (
-          renderOrderList(ordersOlder)
-        ) : (
-          <Block>No older orders.</Block>
-        )}
-      </Block>
+          {ordersOlder.length > 0 ? (
+            renderOrderList(ordersOlder)
+          ) : (
+            <Block>No older orders.</Block>
+          )}
+        </Block>
+     
+
     </Page>
   );
 };

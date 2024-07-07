@@ -1,6 +1,12 @@
 // InsertRecordPage.jsx
 import React, { useState } from 'react';
-import { Page, Navbar, BlockTitle, List, ListInput, Button, Block, Popup } from 'framework7-react';
+import {
+  Page, Navbar, BlockTitle, List, ListInput, Button, Block, Popup, Card,
+  CardContent,
+  CardHeader,
+  BlockHeader,
+  Checkbox, Link, Icon,
+} from 'framework7-react';
 import { supabase } from '../../components/supabase';
 import DetailPopup from './DetailPopup';
 
@@ -118,17 +124,65 @@ const InsertRecordPage = ({ f7router }) => {
           onInput={handleInputChange}
         />
       </List>
-      <BlockTitle>Material Issue Details</BlockTitle>
-      <Block>
-        {formData.details.map((detail, index) => (
-          <p key={index}>
-            Product: {detail.product}, Batch: {detail.batch}, UOM: {detail.uom}, Qty: {detail.qty}, Pallet: {detail.pallet}
-          </p>
-        ))}
-      </Block>
-      <Block>
-        <Button fill onClick={() => setPopupOpened(true)}>Add Detail</Button>
-      </Block>
+      
+
+
+      <Card className="data-table data-table-init">
+        <CardHeader>
+          <div className="data-table-links">
+            <a className="button" onClick={() => setPopupOpened(true)}>Add Products</a>
+
+          </div>
+          {/* <div className="data-table-actions">
+            <Link iconIos="f7:line_horizontal_3_decrease" iconMd="material:sort" />
+            <Link iconIos="f7:ellipsis_vertical_circle" iconMd="material:more_vert" />
+          </div> */}
+        </CardHeader>
+        <CardContent padding={false}>
+          <table>
+            <thead>
+
+              <tr >
+
+                <th className="label-cell">PRODUCT</th>
+                <th className="numeric-cell">QTY</th>
+                <th className="numeric-cell">UOM</th>
+               
+                <th className="numeric-cell">BATCH</th>
+                <th className="numeric-cell">PALLET</th>
+                <th className="medium-only">
+                  <Icon ios="f7:chat_bubble_text_fill" md="material:message" /> Comments
+                </th>
+                <th></th>
+              </tr>
+
+            </thead>
+            <tbody>
+              {formData.details.map((detail, index) => (
+                <tr key={index}>
+
+                  <td className="label-cell">{detail.product}</td>
+                  <td className="numeric-cell">{detail.qty}</td>
+                  <td className="numeric-cell">{detail.uom}</td>
+                  
+                  <td className="numeric-cell">{detail.batch}</td>
+                  <td className="numeric-cell">{detail.pallet}</td>
+                  <td className="medium-only">I like frozen yogurt</td>
+                  <td className="actions-cell">
+                   
+                    <Link iconIos="f7:trash" iconMd="material:delete" />
+                  </td>
+                </tr>
+              ))}
+
+            </tbody>
+          </table>
+        </CardContent>
+      </Card>
+
+
+
+
       <Block>
         <Button fill onClick={handleSubmit}>Submit</Button>
       </Block>

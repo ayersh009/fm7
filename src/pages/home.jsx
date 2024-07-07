@@ -48,23 +48,36 @@ const HomePage = () => (
     </Navbar>
 
     {/* Page content */}
-    <Block></Block>
-    <BlockTitle>Navigation</BlockTitle>
-    <List strong inset dividersIos>
-      {/* <ListItem link="/about/" title="About"/>
-      <ListItem link="/form/" title="Form"/> */}
-      <ListItem link='/csv/' title='Stock Report' badge='New' />
-      <ListItem link='/move/' title='Move Pallet' />
-      <ListItem link='/order/' title='Order Manager' />
-    </List>
+    <Block>
+      <BlockTitle>Stock Movement</BlockTitle>
+      <List strong inset dividersIos>
+       
+        <ListItem link='/csv/' title='Stock Report' />
+        <ListItem link='/move/' title='Move Pallet' />
 
-    <List strong inset dividersIos>
-      {/* <ListItem link="/about/" title="About"/>
-      <ListItem link="/form/" title="Form"/> */}
-      <ListItem link='/materialissue/' title='Material Issue Trcker' badge='New' />
-      
-    </List>
+      </List>
+    </Block>
 
+    <Block>
+      <BlockTitle>Material Issue</BlockTitle>
+      <List strong inset dividersIos>
+        {/* <ListItem link="/about/" title="About"/>
+      <ListItem link="/form/" title="Form"/> */}
+        <ListItem link='/materialissue/' title='Material Issue Tracker' badge='New' badgeColor='green' />
+        <ListItem link='/insertissue/' title='Add Record' />
+
+
+      </List>
+    </Block>
+
+    <Block>
+      <BlockTitle>Order Management</BlockTitle>
+      <List strong inset dividersIos>
+
+        <ListItem link='/order/' title='Order Manager' badge='1' badgeColor='green' />
+
+      </List>
+    </Block>
     {/* <BlockTitle>Modals</BlockTitle>
     <Block className="grid grid-cols-2 grid-gap">
       
