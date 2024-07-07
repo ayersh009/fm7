@@ -58,6 +58,13 @@ const HomePage = () => (
       <ListItem link='/order/' title='Order Manager' />
     </List>
 
+    <List strong inset dividersIos>
+      {/* <ListItem link="/about/" title="About"/>
+      <ListItem link="/form/" title="Form"/> */}
+      <ListItem link='/materialissue/' title='Material Issue Trcker' badge='New' />
+      
+    </List>
+
     {/* <BlockTitle>Modals</BlockTitle>
     <Block className="grid grid-cols-2 grid-gap">
       

@@ -14,11 +14,27 @@ import MovePage from '../pages/move.jsx'
 import OrderPage from '../pages/norder.jsx';
 import DetailPage from '../pages/palletdetails.jsx';
 import OrderDetailsPage from '../pages/orderdetails.jsx';
+import MaterialHome from '../pages/materialissue/listview.jsx'
+import MaterialSingelRecord from '../pages/materialissue/SingleRecordPage.jsx'
+import InsertMaterialIssueRecordPage from '../pages/materialissue/InsertRecordPage.jsx';
 
 var routes = [
   {
     path: '/',
     component: HomePage,
+  },
+  {
+    path: '/materialissue/',
+    component: MaterialHome,
+  },
+
+  {
+    path: '/insertissue/',
+    component: InsertMaterialIssueRecordPage,
+  },
+  {
+    path: '/materialissuesingle/:mrn_no',
+    component: MaterialSingelRecord,
   },
   {
     path: '/orderdetails/:order',
