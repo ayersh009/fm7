@@ -8,7 +8,7 @@ import {
   Checkbox, Link, Icon,
 } from 'framework7-react';
 import { supabase } from '../../components/supabase';
-import DetailPopup from './detailpopup';
+import DetailPopup from './DetailPopup';
 
 const InsertRecordPage = ({ f7router }) => {
   const [formData, setFormData] = useState({
