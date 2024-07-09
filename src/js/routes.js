@@ -14,9 +14,10 @@ import MovePage from '../pages/move.jsx'
 import OrderPage from '../pages/norder.jsx';
 import DetailPage from '../pages/palletdetails.jsx';
 import OrderDetailsPage from '../pages/orderdetails.jsx';
-import MaterialHome from '../pages/materialissue/listview.jsx'
-import MaterialSingelRecord from '../pages/materialissue/SingleRecordPage.jsx'
-import InsertMaterialIssueRecordPage from '../pages/materialissue/InsertRecordPage.jsx';
+import MaterialIssueList from '../pages/materialissue/list.jsx'
+import MaterialSingleRecord from '../pages/materialissue/singlerecord.jsx'
+import InsertMaterialIssueRecordPage from '../pages/materialissue/insert.jsx';
+
 
 var routes = [
   {
@@ -24,17 +25,18 @@ var routes = [
     component: HomePage,
   },
   {
-    path: '/materialissue/',
-    component: MaterialHome,
+    path: '/materialissuelist/',
+    component: MaterialIssueList,
   },
 
+
   {
-    path: '/insertissue/',
+    path: '/materialissueinsert/',
     component: InsertMaterialIssueRecordPage,
   },
   {
-    path: '/materialissuesingle/:mrn_no',
-    component: MaterialSingelRecord,
+    path: '/materialissuesinglerecord/:item',
+    component: MaterialSingleRecord,
   },
   {
     path: '/orderdetails/:order',

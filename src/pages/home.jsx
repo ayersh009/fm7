@@ -63,8 +63,8 @@ const HomePage = () => (
       <List strong inset dividersIos>
         {/* <ListItem link="/about/" title="About"/>
       <ListItem link="/form/" title="Form"/> */}
-        <ListItem link='/materialissue/' title='Material Issue Tracker' badge='New' badgeColor='green' />
-        <ListItem link='/insertissue/' title='Add Record' />
+        <ListItem link='/materialissuelist/' title='Material Issue Tracker' badge='New' badgeColor='green' />
+        <ListItem link='/materialissueinsert/' title='Add Record' />
 
 
       </List>
