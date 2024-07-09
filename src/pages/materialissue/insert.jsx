@@ -63,7 +63,7 @@ const InsertRecordPage = ({ f7router }) => {
     const photo = await Camera.getPhoto({
       resultType: CameraResultType.DataUrl,
       source: CameraSource.Photos,
-      quality: 100,
+      quality: 90,
     });
     const blob = await (await fetch(photo.dataUrl)).blob();
     const file = new File([blob], `picked_photo.${blob.type.split('/')[1]}`, { type: blob.type });

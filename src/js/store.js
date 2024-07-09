@@ -17,10 +17,16 @@ const store = createStore({
   },
   actions: {
     async fetchOrders({ state }) {
+      const today = new Date();
+      const last7Days = new Date(today);
+      last7Days.setDate(today.getDate() - 7);
+    
       const { data, error } = await supabase
         .from('ordermanager')
         .select('*')
+        .gte('orderdate', last7Days.toISOString())
         .order('orderdate', { ascending: false });
+    
       if (error) {
         console.error('Error fetching orders:', error);
       } else {

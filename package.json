@@ -7,6 +7,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "start": "npm run dev",
+    "gitpull":"git pull fm7 main",
     "copy": "npx cap copy",
     "open": "npx cap open android",
     "dev": "cross-env NODE_ENV=development vite",

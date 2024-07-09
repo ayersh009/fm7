@@ -12,6 +12,7 @@ import {
   useStore
 } from 'framework7-react';
 import store from '../js/store';
+import CustomListView from '../components/neworder';
 
 const OrderListPage = ({ f7router }) => {
   const orders = useStore('orders');
@@ -50,6 +51,23 @@ const OrderListPage = ({ f7router }) => {
           footer={order.destination}
           after={order.status}
         />
+      ))}
+    </List>
+  );
+
+  const renderOrderListNew = orders => (
+    <List>
+      {orders.map(order => (
+        <CustomListView
+        key={order.memeID}
+        link={`/orderdetails/${encodeURIComponent(JSON.stringify(order))}`}
+        name={order.vehicleno}
+        email={order.transport}
+        role={order.destination}
+        lastLogin={new Date(order.orderdate).toLocaleDateString()}
+        status={order.status}
+        avatar="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvCEBlARzs0B-fCAFUnrdC_-aU2_j9snaTiw&s"
+      />
       ))}
     </List>
   );
@@ -93,7 +111,7 @@ const OrderListPage = ({ f7router }) => {
         <Block strong>
         <BlockTitle>Older than Today</BlockTitle>
           {ordersOlder.length > 0 ? (
-            renderOrderList(ordersOlder)
+            renderOrderListNew(ordersOlder)
           ) : (
             <Block>No older orders.</Block>
           )}
