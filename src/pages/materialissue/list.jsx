@@ -1,54 +1,61 @@
 import React, { useState, useEffect } from 'react';
-import { Page, Navbar, List, ListItem, Block, Button, Fab, FabButton, FabButtons, Icon } from 'framework7-react';
+import { Page, Navbar, List, ListItem, Block, Button, Fab, Icon, Preloader } from 'framework7-react';
 import { supabase } from '../../components/supabase';
 
 const ListView = ({ f7router }) => {
   const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchData = async () => {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from('MaterialIssueTracker')
+      .select('*');
+    setLoading(false);
+
+    if (error) {
+      console.error('Error fetching data: ', error);
+    } else {
+      setItems(data);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      const { data, error } = await supabase
-        .from('MaterialIssueTracker')
-        .select('*');
-
-      if (error) {
-        console.error('Error fetching data: ', error);
-      } else {
-        setItems(data);
-      }
-    };
-
     fetchData();
   }, []);
 
-  return (
-    <Page>
-      <Navbar title="Material Issue Tracker" backLink="Back" />
+  const refreshData = (done) => {
+    fetchData().then(() => done());
+  };
 
-      {/*  <Block>
-        <Button fill onClick={() => f7router.navigate('/insertissue/')}>Insert New Record</Button>
-      </Block> */}
+  return (
+    <Page ptr onPtrRefresh={refreshData}>
+      <Navbar title="Material Issue Tracker" backLink="Back" />
 
       <Fab position="right-bottom" slot="fixed" text="Create" onClick={() => f7router.navigate('/materialissueinsert/')}>
         <Icon ios="f7:plus" md="material:add" />
       </Fab>
 
-      <List mediaList>
-        {items.map((item, index) => (
-          <ListItem
-            key={index}
-            title={`${item.issue_date} • ${item.mrn_no}`}
-            after=""
-            subtitle={`${item.requested_by} • ${item.requirement_purpose} • ${item.issued_by}`}
-            text=""
-            //link={`/materialissuesinglerecord/${item.mrn_no}`}
-            link={`/materialissuesinglerecord/${encodeURIComponent(JSON.stringify(item))}`}
-          //onClick={() => f7router.navigate(`/materialissue/singlerecord/${item.mrn_no}`)}
-          >
-            <img slot="media" src={item.mrn_photo} width="40" />
-          </ListItem>
-        ))}
-      </List>
+      {loading ? (
+        <Block className="text-align-center">
+          <Preloader />
+        </Block>
+      ) : (
+        <List mediaList>
+          {items.map((item, index) => (
+            <ListItem
+              key={index}
+              title={`${item.issue_date} • ${item.mrn_no}`}
+              after=""
+              subtitle={`${item.requested_by} • ${item.requirement_purpose} • ${item.issued_by}`}
+              text=""
+              link={`/materialissuesinglerecord/${encodeURIComponent(JSON.stringify(item))}`}
+            >
+              <img slot="media" src={item.mrn_photo} width="40" />
+            </ListItem>
+          ))}
+        </List>
+      )}
     </Page>
   );
 };

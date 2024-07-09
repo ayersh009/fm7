@@ -1,8 +1,9 @@
+// SingleRecordPage.jsx
 import React, { useState, useEffect } from 'react';
-import { Page, Navbar, BlockTitle, Block, List, ListItem, ListItemContent, ListItemLabel, Button } from 'framework7-react';
+import { Page, Navbar, BlockTitle, Block, Button } from 'framework7-react';
 import { supabase } from '../../components/supabase';
 
-const SingleRecordPage = ({ f7route }) => {
+const SingleRecordPage = ({ f7route}) => {
   const item = JSON.parse(decodeURIComponent(f7route.params.item));
   const mrn_no = item.mrn_no;
   const [details, setDetails] = useState([]);
@@ -13,7 +14,7 @@ const SingleRecordPage = ({ f7route }) => {
         .from('materialissuedetails')
         .select('*')
         .eq('mrn_no', mrn_no);
-
+      
       if (error) {
         console.error('Error fetching details:', error.message);
       } else {
@@ -31,8 +32,6 @@ const SingleRecordPage = ({ f7route }) => {
   return (
     <Page>
       <Navbar title="Record Details" backLink="Back" />
-      
-      {/* Main Record Details */}
       <BlockTitle>Material Issue Tracker</BlockTitle>
       <Block strong>
         <p><strong>MRN No:</strong> {item.mrn_no}</p>
@@ -43,36 +42,18 @@ const SingleRecordPage = ({ f7route }) => {
         <p><strong>Issued By:</strong> {item.issued_by}</p>
         <img src={item.mrn_photo} alt="MRN Photo" style={{ width: '100%' }} />
       </Block>
-      
-      {/* Material Issue Details */}
       <BlockTitle>Material Issue Details</BlockTitle>
-      <List mediaList>
-        {details.map((detail, index) => (
-          <ListItem key={index} title={`Detail ID: ${detail.detail_id}`}>
-            <ListItemContent>
-              <ListItemLabel>Description</ListItemLabel>
-              {detail.description}
-            </ListItemContent>
-            <ListItemContent>
-              <ListItemLabel>Batch</ListItemLabel>
-              {detail.batch}
-            </ListItemContent>
-            <ListItemContent>
-              <ListItemLabel>UOM</ListItemLabel>
-              {detail.uom}
-            </ListItemContent>
-            <ListItemContent>
-              <ListItemLabel>Quantity</ListItemLabel>
-              {detail.quantity}
-            </ListItemContent>
-            <ListItemContent>
-              <ListItemLabel>Pallet</ListItemLabel>
-              {detail.pallet}
-            </ListItemContent>
-            {/* Add other fields as necessary */}
-          </ListItem>
-        ))}
-      </List>
+      {details.map((detail, index) => (
+        <Block strong key={index}>
+          <p><strong>Detail ID:</strong> {detail.detail_id}</p>
+          <p><strong>Description:</strong> {detail.description}</p>
+          <p><strong>Batch:</strong> {detail.batch}</p>
+          <p><strong>UOM:</strong> {detail.uom}</p>
+          <p><strong>Quantity:</strong> {detail.quantity}</p>
+          <p><strong>Pallet:</strong> {detail.pallet}</p>
+          {/* Add other fields as necessary */}
+        </Block>
+      ))}
     </Page>
   );
 };

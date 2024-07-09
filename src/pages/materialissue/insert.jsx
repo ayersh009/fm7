@@ -1,28 +1,37 @@
-// InsertRecordPage.jsx
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
-  Page, Navbar, BlockTitle, List, ListInput, Button, Block, Popup, Card,
+  Page,
+  Navbar,
+  BlockTitle,
+  List,
+  ListInput,
+  Button,
+  Block,
+  Popup,
+  Card,
   CardContent,
   CardHeader,
-  BlockHeader,
-  Checkbox, Link, Icon,
-} from 'framework7-react';
-import { supabase } from '../../components/supabase';
-import DetailPopup from './DetailPopup';
+  Link,
+  Icon,
+} from "framework7-react";
+import { Camera, CameraResultType } from '@capacitor/camera';
+import { supabase } from "../../components/supabase";
+import DetailPopup from "./DetailPopup";
 
 const InsertRecordPage = ({ f7router }) => {
   const [formData, setFormData] = useState({
-    mrn_no: '',
-    issue_date: '',
-    requested_by: '',
-    requirement_purpose: '',
-    handover_to: '',
-    issued_by: '',
-    mrn_photo: '',
-    details: []
+    mrn_no: "",
+    issue_date: "",
+    requested_by: "",
+    requirement_purpose: "",
+    handover_to: "",
+    issued_by: "",
+    mrn_photo: "",
+    details: [],
   });
 
   const [popupOpened, setPopupOpened] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -33,33 +42,91 @@ const InsertRecordPage = ({ f7router }) => {
     setFormData({ ...formData, details: [...formData.details, detail] });
   };
 
+  const handleCapturePhoto = async () => {
+    try {
+      const image = await Camera.getPhoto({
+        resultType: CameraResultType.Uri,
+        quality: 90,
+        allowEditing: true,
+      });
+      if (image.webPath) {
+        await handleUploadPhoto(image.webPath);
+      }
+    } catch (error) {
+      console.error("Error capturing image: ", error);
+    }
+  };
+
+  const handleUploadPhoto = async (fileUri) => {
+    try {
+      setUploading(true);
+      const response = await fetch(fileUri);
+      const blob = await response.blob();
+      const fileName = `${Date.now()}-${fileUri.split('/').pop()}`;
+
+      const { data, error } = await supabase.storage
+        .from('images')
+        .upload(fileName, blob);
+
+      if (error) {
+        throw error;
+      }
+
+      const { publicURL } = supabase.storage.from('images').getPublicUrl(fileName);
+      setFormData({ ...formData, mrn_photo: publicURL });
+    } catch (error) {
+      console.error("Error uploading image: ", error);
+    } finally {
+      setUploading(false);
+    }
+  };
+
   const handleSubmit = async () => {
-    const { mrn_no, issue_date, requested_by, requirement_purpose, handover_to, issued_by, mrn_photo, details } = formData;
+    const {
+      mrn_no,
+      issue_date,
+      requested_by,
+      requirement_purpose,
+      handover_to,
+      issued_by,
+      mrn_photo,
+      details,
+    } = formData;
 
     // Insert into MaterialIssueTracker
     const { data: masterData, error: masterError } = await supabase
-      .from('MaterialIssueTracker')
-      .insert([{ mrn_no, issue_date, requested_by, requirement_purpose, handover_to, issued_by, mrn_photo }])
+      .from("MaterialIssueTracker")
+      .insert([
+        {
+          mrn_no,
+          issue_date,
+          requested_by,
+          requirement_purpose,
+          handover_to,
+          issued_by,
+          mrn_photo,
+        },
+      ])
       .single();
 
     if (masterError) {
-      console.error('Error inserting master record:', masterError);
+      console.error("Error inserting master record:", masterError);
       return;
     }
 
     // Insert into materialissuedetails
-    const detailRecords = details.map(detail => ({ ...detail, mrn_no }));
+    const detailRecords = details.map((detail) => ({ ...detail, mrn_no }));
     const { error: detailsError } = await supabase
-      .from('materialissuedetails')
+      .from("materialissuedetails")
       .insert(detailRecords);
 
     if (detailsError) {
-      console.error('Error inserting detail records:', detailsError);
+      console.error("Error inserting detail records:", detailsError);
       return;
     }
 
     // Redirect to ListView after successful insert
-    f7router.navigate('/');
+    f7router.navigate("/");
   };
 
   return (
@@ -119,72 +186,62 @@ const InsertRecordPage = ({ f7router }) => {
           label="MRN Photo URL"
           type="text"
           name="mrn_photo"
-          placeholder="Enter MRN Photo URL"
+          placeholder="MRN Photo URL will appear here after uploading"
           value={formData.mrn_photo}
-          onInput={handleInputChange}
+          readonly
         />
+        <Button fill raised onClick={handleCapturePhoto} disabled={uploading}>
+          {uploading ? "Uploading..." : "Capture/Select Photo"}
+        </Button>
       </List>
-      
-
 
       <Card className="data-table data-table-init">
         <CardHeader>
           <div className="data-table-links">
-            <a className="button" onClick={() => setPopupOpened(true)}>Add Products</a>
-
+            <a className="button" onClick={() => setPopupOpened(true)}>
+              Add Products
+            </a>
           </div>
-          {/* <div className="data-table-actions">
-            <Link iconIos="f7:line_horizontal_3_decrease" iconMd="material:sort" />
-            <Link iconIos="f7:ellipsis_vertical_circle" iconMd="material:more_vert" />
-          </div> */}
         </CardHeader>
         <CardContent padding={false}>
           <table>
             <thead>
-
-              <tr >
-
+              <tr>
                 <th className="label-cell">PRODUCT</th>
                 <th className="numeric-cell">QTY</th>
                 <th className="numeric-cell">UOM</th>
-               
                 <th className="numeric-cell">BATCH</th>
                 <th className="numeric-cell">PALLET</th>
                 <th className="medium-only">
-                  <Icon ios="f7:chat_bubble_text_fill" md="material:message" /> Comments
+                  <Icon ios="f7:chat_bubble_text_fill" md="material:message" />{" "}
+                  Comments
                 </th>
                 <th></th>
               </tr>
-
             </thead>
             <tbody>
               {formData.details.map((detail, index) => (
                 <tr key={index}>
-
                   <td className="label-cell">{detail.product}</td>
                   <td className="numeric-cell">{detail.qty}</td>
                   <td className="numeric-cell">{detail.uom}</td>
-                  
                   <td className="numeric-cell">{detail.batch}</td>
                   <td className="numeric-cell">{detail.pallet}</td>
                   <td className="medium-only">I like frozen yogurt</td>
                   <td className="actions-cell">
-                   
                     <Link iconIos="f7:trash" iconMd="material:delete" />
                   </td>
                 </tr>
               ))}
-
             </tbody>
           </table>
         </CardContent>
       </Card>
 
-
-
-
       <Block>
-        <Button fill onClick={handleSubmit}>Submit</Button>
+        <Button fill onClick={handleSubmit}>
+          Submit
+        </Button>
       </Block>
       <DetailPopup
         opened={popupOpened}
