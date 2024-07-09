@@ -91,4 +91,15 @@ const HomePage = () => (
     </Block> */}
   </Page>
 )
+
+
+const styles = {
+  card: {
+    backgroundColor: 'green',
+    borderRadius: '199px',
+   // padding: '8px',
+    //boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+    //marginTop: '8px',
+    //marginBottom: '8px',
+  },}
 export default HomePage
