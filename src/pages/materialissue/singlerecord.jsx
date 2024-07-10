@@ -1,61 +1,94 @@
 // SingleRecordPage.jsx
-import React, { useState, useEffect } from 'react';
-import { Page, Navbar, BlockTitle, Block, Button } from 'framework7-react';
-import { supabase } from '../../components/supabase';
+import React, { useState, useEffect } from 'react'
+import {
+  Page,
+  Navbar,
+  BlockTitle,
+  Block,
+  Button,
+  List,
+  ListItem,
+  Card, CardContent, CardHeader
+} from 'framework7-react'
+import { supabase } from '../../components/supabase'
 
-const SingleRecordPage = ({ f7route}) => {
-  const item = JSON.parse(decodeURIComponent(f7route.params.item));
-  const mrn_no = item.mrn_no;
-  const [details, setDetails] = useState([]);
+const SingleRecordPage = ({ f7route }) => {
+  const item = JSON.parse(decodeURIComponent(f7route.params.item))
+  const mrn_no = item.mrn_no
+  const [details, setDetails] = useState([])
 
   const fetchDetails = async () => {
     try {
       const { data, error } = await supabase
         .from('materialissuedetails')
         .select('*')
-        .eq('mrn_no', mrn_no);
-      
+        .eq('mrn_no', mrn_no)
+
       if (error) {
-        console.error('Error fetching details:', error.message);
+        console.error('Error fetching details:', error.message)
       } else {
-        setDetails(data);
+        setDetails(data)
+        console.log(data)
       }
     } catch (error) {
-      console.error('Error fetching details:', error.message);
+      console.error('Error fetching details:', error.message)
     }
-  };
+  }
 
   useEffect(() => {
-    fetchDetails(); // Fetch details when component mounts or when `mrn_no` changes
-  }, [mrn_no]);
+    fetchDetails() // Fetch details when component mounts or when `mrn_no` changes
+  }, [mrn_no])
 
   return (
     <Page>
-      <Navbar title="Record Details" backLink="Back" />
+      <Navbar title='Record Details' backLink='Back' />
       <BlockTitle>Material Issue Tracker</BlockTitle>
-      <Block strong>
-        <p><strong>MRN No:</strong> {item.mrn_no}</p>
-        <p><strong>Issue Date:</strong> {item.issue_date}</p>
-        <p><strong>Requested By:</strong> {item.requested_by}</p>
-        <p><strong>Requirement Purpose:</strong> {item.requirement_purpose}</p>
-        <p><strong>Handover To:</strong> {item.handover_to}</p>
-        <p><strong>Issued By:</strong> {item.issued_by}</p>
-        <img src={item.mrn_photo} alt="MRN Photo" style={{ width: '100%' }} />
-      </Block>
+      <List>
+        <ListItem>
+          <img src={item.mrn_photo} alt='MRN Photo' style={{ width: '70%' }} />
+        </ListItem>
+        <ListItem header='MRN No' title={item.mrn_no}></ListItem>
+        <ListItem header='Issue Date' title={item.issue_date}></ListItem>
+        <ListItem header='Requested By' title={item.requested_by}></ListItem>
+        <ListItem
+          header='Requirement Purpose'
+          title={item.requirement_purpose}
+        ></ListItem>
+        <ListItem header='Handover To' title={item.handover_to}></ListItem>
+        <ListItem header='Issued By' title={item.issued_by}></ListItem>
+      </List>
       <BlockTitle>Material Issue Details</BlockTitle>
-      {details.map((detail, index) => (
-        <Block strong key={index}>
-          <p><strong>Detail ID:</strong> {detail.detail_id}</p>
-          <p><strong>Description:</strong> {detail.description}</p>
-          <p><strong>Batch:</strong> {detail.batch}</p>
-          <p><strong>UOM:</strong> {detail.uom}</p>
-          <p><strong>Quantity:</strong> {detail.quantity}</p>
-          <p><strong>Pallet:</strong> {detail.pallet}</p>
-          {/* Add other fields as necessary */}
-        </Block>
-      ))}
+      <Card className="data-table data-table-init">
+        
+        <CardContent padding={false}>
+          <table>
+            <thead>
+              <tr>
+                <th className="label-cell">PRODUCT</th>
+                <th className="label-cell">QTY</th>
+                <th className="numeric-cell">UOM</th>
+                <th className="numeric-cell">BATCH</th>
+                <th className="numeric-cell">PALLET</th>
+                
+              </tr>
+            </thead>
+            <tbody>
+              {details.map((detail, index) => (
+                <tr key={index}>
+                  <td className="label-cell">{detail.product}</td>
+                  <td className="label-cell">{detail.qty}</td>
+                  <td className="numeric-cell">{detail.uom}</td>
+                  <td className="numeric-cell">{detail.batch}</td>
+                  <td className="numeric-cell">{detail.pallet}</td>
+                  
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </CardContent>
+      </Card>
     </Page>
-  );
-};
+  )
+}
 
-export default SingleRecordPage;
+export default SingleRecordPage
