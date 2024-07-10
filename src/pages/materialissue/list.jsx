@@ -10,7 +10,8 @@ const ListView = ({ f7router }) => {
     setLoading(true);
     const { data, error } = await supabase
       .from('MaterialIssueTracker')
-      .select('*');
+      .select('*')
+      .order('created_at', { ascending: false });
     setLoading(false);
 
     if (error) {

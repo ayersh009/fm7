@@ -23,12 +23,13 @@ const SingleRecordPage = ({ f7route }) => {
         .from('materialissuedetails')
         .select('*')
         .eq('mrn_no', mrn_no)
+        
 
       if (error) {
         console.error('Error fetching details:', error.message)
       } else {
         setDetails(data)
-        console.log(data)
+        //console.log(data)
       }
     } catch (error) {
       console.error('Error fetching details:', error.message)
