@@ -17,8 +17,8 @@ import {
 } from 'framework7-react'
 import Papa from 'papaparse'
 
-const csvurl =
-  'https://docs.google.com/spreadsheets/d/e/2PACX-1vQt0HJ_mtSACZ88zpfjScQNNmzlqnvGJocVMIaC-MJ_hX4LCfd5VWrZRkPDI37e1VWuDszlw-789W6v/pub?gid=854843404&single=true&output=csv'
+const csvurl = import.meta.env.VITE_CSV_URL
+
 
 const CsvPage = ({ f7router }) => {
   const [data, setData] = useState([])
@@ -50,6 +50,7 @@ const CsvPage = ({ f7router }) => {
         localStorage.setItem(localStorageKey, JSON.stringify(results.data))
         setLoading(false)
         done()
+        
       },
       error: err => {
         setError(err.message)

@@ -3,8 +3,8 @@
 import { createClient } from '@supabase/supabase-js';
 
 // Initialize a Supabase client
-const supabaseUrl = 'https://jjprnnadnbgruhcfztgc.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpqcHJubmFkbmJncnVoY2Z6dGdjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDkyMjA3MzgsImV4cCI6MjAyNDc5NjczOH0.TbCsCoptx1-JwUhZgFdS5eDeWQc1fe2-InALxn-t0lo';
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
 export const fetchOrders = async () => {
