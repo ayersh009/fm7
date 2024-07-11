@@ -17,6 +17,7 @@ import OrderDetailsPage from '../pages/orderdetails.jsx';
 import MaterialIssueList from '../pages/materialissue/list.jsx'
 import MaterialSingleRecord from '../pages/materialissue/singlerecord.jsx'
 import InsertMaterialIssueRecordPage from '../pages/materialissue/insert.jsx';
+import EditRecordPage from '../pages/materialissue/EditRecordPage.jsx';
 
 
 var routes = [
@@ -37,6 +38,10 @@ var routes = [
   {
     path: '/materialissuesinglerecord/:item',
     component: MaterialSingleRecord,
+  },
+  {
+    path: '/edit-record/:item',
+    component: EditRecordPage,
   },
   {
     path: '/orderdetails/:order',
