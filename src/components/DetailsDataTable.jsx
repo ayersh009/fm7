@@ -122,7 +122,7 @@ const DetailsDataTable = ({ mrn_no }) => {
         <CardHeader>
           <div className='data-table-links'>
             <a className='button' onClick={handleAddClick}>
-              Add
+              Add Product
             </a>
           </div>
         </CardHeader>
@@ -164,11 +164,11 @@ const DetailsDataTable = ({ mrn_no }) => {
           </table>
         </CardContent>
       </Card>
-      <Block>
+     {/*  <Block>
         <Button fill onClick={handleAddClick}>
           Add Record
         </Button>
-      </Block>
+      </Block> */}
 
       <Popup opened={isPopupOpen} onPopupClosed={() => setIsPopupOpen(false)}>
         <Page>

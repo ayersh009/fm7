@@ -51,31 +51,35 @@ const HomePage = () => (
     <Block>
       <BlockTitle>Stock Movement</BlockTitle>
       <List strong inset dividersIos>
-       
         <ListItem link='/csv/' title='Stock Report' />
         <ListItem link='/move/' title='Move Pallet' />
-
       </List>
     </Block>
 
     <Block>
       <BlockTitle>Material Issue</BlockTitle>
       <List strong inset dividersIos>
-        <ListItem link="/about/" title="About"/>
-      <ListItem link="/form/" title="Form"/>
-        <ListItem link='/materialissuelist/' title='Material Issue Tracker' badge='New' badgeColor='green' />
+        {/* <ListItem link="/about/" title="About"/>
+      <ListItem link="/form/" title="Form"/> */}
         <ListItem link='/materialissueinsert/' title='Add Record' />
-
-
+        <ListItem
+          link='/materialissuelist/'
+          title='Material Issue List'
+          badge='New'
+          badgeColor='green'
+        />
       </List>
     </Block>
 
     <Block>
       <BlockTitle>Order Management</BlockTitle>
       <List strong inset dividersIos>
-
-        <ListItem link='/order/' title='Order Manager' badge='1' badgeColor='green' />
-
+        <ListItem
+          link='/order/'
+          title='Order Manager'
+          badge='1'
+          badgeColor='green'
+        />
       </List>
     </Block>
     {/* <BlockTitle>Modals</BlockTitle>
@@ -92,14 +96,14 @@ const HomePage = () => (
   </Page>
 )
 
-
 const styles = {
   card: {
     backgroundColor: 'green',
-    borderRadius: '199px',
-   // padding: '8px',
+    borderRadius: '199px'
+    // padding: '8px',
     //boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
     //marginTop: '8px',
     //marginBottom: '8px',
-  },}
+  }
+}
 export default HomePage
