@@ -1,15 +1,59 @@
-// SingleRecordPage.jsx
 import React from 'react';
-import { Page, Navbar, BlockTitle, List, ListItem,Link } from 'framework7-react';
+import { Page, Navbar, BlockTitle, List, ListItem, Link,f7 } from 'framework7-react';
 import DetailsDataTable from '../../components/DetailsDataTable';
+import { supabase } from '../../components/supabase';
+
 
 const SingleRecordPage = ({ f7route, f7router }) => {
   const item = JSON.parse(decodeURIComponent(f7route.params.item));
 
+  const deleteRecord = async (mrn_no) => {
+    try {
+      // Delete associated details first
+      const { data: detailsData, error: detailsError } = await supabase
+        .from('materialissuedetails')
+        .delete()
+        .eq('mrn_no', mrn_no);
+
+      if (detailsError) {
+        throw detailsError;
+      }
+
+      // Delete the main record
+      const { data: recordData, error: recordError } = await supabase
+        .from('MaterialIssueTracker')
+        .delete()
+        .eq('mrn_no', mrn_no);
+
+      if (recordError) {
+        throw recordError;
+      }
+
+      // Navigate back after successful deletion
+      f7router.back();
+    } catch (error) {
+      console.error('Error deleting record:', error);
+      f7.dialog.alert('Failed to delete record');
+    }
+  };
+
   return (
     <Page>
       <Navbar title="Record Details" backLink="Back">
-        <Link icon="f7:edit" slot="right" onClick={() => f7router.navigate(`/edit-record/${encodeURIComponent(JSON.stringify(item))}`)} />
+        <Link
+          iconMd="f7:square_pencil"
+          slot="right"
+          onClick={() => f7router.navigate(`/edit-record/${encodeURIComponent(JSON.stringify(item))}`)}
+        />
+        <Link
+          iconMd="f7:trash"
+          slot="right"
+          onClick={() => {
+            f7.dialog.confirm('Are you sure you want to delete this record?', 'Delete Record', () => {
+              deleteRecord(item.mrn_no);
+            });
+          }}
+        />
       </Navbar>
 
       <BlockTitle>Material Issue Tracker</BlockTitle>
