@@ -11,8 +11,8 @@ import {
   BlockTitle,
   useStore
 } from 'framework7-react';
-import store from '../js/store';
-import CustomListView from '../components/neworder';
+import store from '../../js/store';
+import CustomListView from '../../components/neworder';
 
 const OrderListPage = ({ f7router }) => {
   const orders = useStore('orders');

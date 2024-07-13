@@ -2,22 +2,25 @@
 import HomePage from '../pages/home.jsx';
 import AboutPage from '../pages/about.jsx';
 import FormPage from '../pages/form.jsx';
-import CatalogPage from '../pages/catalog.jsx';
+import CatalogPage from '../pages/stock/catalog.jsx';
 import ProductPage from '../pages/product.jsx';
 import SettingsPage from '../pages/settings.jsx';
 
 import DynamicRoutePage from '../pages/dynamic-route.jsx';
 import RequestAndLoad from '../pages/request-and-load.jsx';
 import NotFoundPage from '../pages/404.jsx';
-import CsvPage from '../pages/CsvPage.jsx'
-import MovePage from '../pages/move.jsx'
-import OrderPage from '../pages/norder.jsx';
-import DetailPage from '../pages/palletdetails.jsx';
-import OrderDetailsPage from '../pages/orderdetails.jsx';
+import CsvPage from '../pages/stock/CsvPage.jsx'
+import MovePage from '../pages/stock/move.jsx'
+import OrderPage from '../pages/order/norder.jsx';
+import DetailPage from '../pages/stock/palletdetails.jsx';
+import OrderDetailsPage from '../pages/order/orderdetails.jsx';
 import MaterialIssueList from '../pages/materialissue/list.jsx'
 import MaterialSingleRecord from '../pages/materialissue/singlerecord.jsx'
 import InsertMaterialIssueRecordPage from '../pages/materialissue/insert.jsx';
 import EditRecordPage from '../pages/materialissue/EditRecordPage.jsx';
+
+//stock
+import StockSummaryPage from '../pages/stock/stocksummary.jsx';
 
 
 var routes = [
@@ -30,7 +33,10 @@ var routes = [
     component: MaterialIssueList,
   },
 
-
+  {
+    path: '/stocksummary/',
+    component: StockSummaryPage,
+  },
   {
     path: '/materialissueinsert/',
     component: InsertMaterialIssueRecordPage,

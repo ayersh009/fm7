@@ -86,7 +86,7 @@ const SingleRecordPage = ({ f7route, f7router }) => {
 
   const shareRecord = async () => {
     const detailsText = details.map(detail => 
-      `Item: ${detail.item_name}, Quantity: ${detail.quantity}, Unit: ${detail.unit}`).join('\n');
+      `Item: ${detail.product}, Quantity: ${detail.qty}, Unit: ${detail.uom}`).join('\n');
 
     const shareText = `
       MRN No: ${item.mrn_no}

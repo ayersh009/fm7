@@ -11,12 +11,12 @@ import {
   ListItem,
   f7
 } from 'framework7-react'
-import { supabase } from '../components/supabase'
-import TrackingCard from '../components/trackingcard'
-import InProcessCard from '../components/inprocesscard'
+import { supabase } from '../../components/supabase'
+import TrackingCard from '../../components/trackingcard'
+import InProcessCard from '../../components/inprocesscard'
 import './orderp.css' // Assuming you save your CSS in OrderPage.css
 
-import store from '../js/store';
+import store from '../../js/store';
 
 const OrderPage = ({ f7router }) => {
   const [trackingData, setTrackingData] = useState({

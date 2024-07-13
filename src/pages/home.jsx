@@ -53,6 +53,8 @@ const HomePage = () => (
       <List strong inset dividersIos>
         <ListItem link='/csv/' title='Stock Report' />
         <ListItem link='/move/' title='Move Pallet' />
+        <ListItem link='/stocksummary/' title='Stock Summary' badge='New'
+          badgeColor='green' />
       </List>
     </Block>
 
@@ -65,8 +67,7 @@ const HomePage = () => (
         <ListItem
           link='/materialissuelist/'
           title='Material Issue List'
-          badge='New'
-          badgeColor='green'
+          
         />
       </List>
     </Block>
@@ -77,7 +78,7 @@ const HomePage = () => (
         <ListItem
           link='/order/'
           title='Order Manager'
-          badge='1'
+          badge='mementodb'
           badgeColor='green'
         />
       </List>
