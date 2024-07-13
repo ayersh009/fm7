@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Popup, Page, Navbar, List, ListInput, Button, Block, ListItem, Icon } from 'framework7-react';
+import { Popup, Page, Navbar, List, ListInput, Button, Block, ListItem, Icon,NavRight,Link } from 'framework7-react';
 
 const DetailPopup = ({ opened, onClose, onSave }) => {
   const initialDetailState = { product: '', batch: '', uom: '', qty: '', pallet: '' };
@@ -42,7 +42,9 @@ const DetailPopup = ({ opened, onClose, onSave }) => {
   return (
     <Popup opened={opened} onPopupClosed={onClose}>
       <Page>
-        <Navbar title="Add Detail" />
+        <Navbar title="Add Detail" ><NavRight>
+              <Link popupClose>Close</Link>
+            </NavRight></Navbar>
         <List noHairlinesMd>
           <ListInput
             label="Product"

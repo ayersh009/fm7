@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 import {
   Page,
   Navbar,
@@ -8,35 +8,42 @@ import {
   Segmented,
   Button,
   Subnavbar,
+  Badge,
   BlockTitle,
   useStore
-} from 'framework7-react';
-import store from '../../js/store';
-import CustomListView from '../../components/neworder';
+} from 'framework7-react'
+import store from '../../js/store'
+import CustomListView from '../../components/neworder'
 
 const OrderListPage = ({ f7router }) => {
-  const orders = useStore('orders');
-  const [filter, setFilter] = useState('All');
+  const orders = useStore('orders')
+  const [filter, setFilter] = useState('All')
 
   useEffect(() => {
-    store.dispatch('fetchOrders');
-  }, []);
+    store.dispatch('fetchOrders')
+  }, [])
 
   const filteredOrders = orders.filter(
     order => filter === 'All' || order.status === filter
-  );
+  )
 
-  const today = new Date().setHours(0, 0, 0, 0);
+  const today = new Date().setHours(0, 0, 0, 0)
 
   const ordersToday = filteredOrders.filter(order => {
-    const orderDate = new Date(order.orderdate).setHours(0, 0, 0, 0);
-    return orderDate === today;
-  });
+    const orderDate = new Date(order.orderdate).setHours(0, 0, 0, 0)
+    return orderDate === today
+  })
 
   const ordersOlder = filteredOrders.filter(order => {
-    const orderDate = new Date(order.orderdate).setHours(0, 0, 0, 0);
-    return orderDate < today;
-  });
+    const orderDate = new Date(order.orderdate).setHours(0, 0, 0, 0)
+    return orderDate < today
+  })
+
+  const statusColors = {
+    Loaded: 'green',
+    Reported: 'orange',
+    'In Process': 'yellow'
+  };
 
   const renderOrderList = orders => (
     <List>
@@ -53,24 +60,40 @@ const OrderListPage = ({ f7router }) => {
         />
       ))}
     </List>
-  );
+  )
+
+  const renderOrderListrev = orders => (
+    <List dividersIos mediaList outlineIos strongIos>
+      {orders.map(order => (
+        <ListItem
+          key={order.memeID}
+          title={order.vehicleno}
+          after={<Badge color={statusColors[order.status]}>{order.status}</Badge>}
+          text={`${new Date(order.orderdate).toLocaleDateString()} - ${order.destination}`}
+          link={`/orderdetails/${encodeURIComponent(JSON.stringify(order))}`}
+        >
+          
+        </ListItem>
+      ))}
+    </List>
+  )
 
   const renderOrderListNew = orders => (
     <List>
       {orders.map(order => (
         <CustomListView
-        key={order.memeID}
-        link={`/orderdetails/${encodeURIComponent(JSON.stringify(order))}`}
-        name={order.vehicleno}
-        email={order.transport}
-        role={order.destination}
-        lastLogin={new Date(order.orderdate).toLocaleDateString()}
-        status={order.status}
-        avatar="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvCEBlARzs0B-fCAFUnrdC_-aU2_j9snaTiw&s"
-      />
+          key={order.memeID}
+          link={`/orderdetails/${encodeURIComponent(JSON.stringify(order))}`}
+          name={order.vehicleno}
+          email={order.transport}
+          role={order.destination}
+          lastLogin={new Date(order.orderdate).toLocaleDateString()}
+          status={order.status}
+          avatar='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvCEBlARzs0B-fCAFUnrdC_-aU2_j9snaTiw&s'
+        />
       ))}
     </List>
-  );
+  )
 
   return (
     <Page>
@@ -100,26 +123,24 @@ const OrderListPage = ({ f7router }) => {
           </Button>
         </Segmented>
       </Subnavbar>
-      <Block strong>
+      <Block>
         <BlockTitle>Today</BlockTitle>
         {ordersToday.length > 0 ? (
-          renderOrderList(ordersToday)
+          renderOrderListrev(ordersToday)
         ) : (
           <Block>No orders for today.</Block>
         )}
-         </Block>
-        <Block strong>
+      </Block>
+      <Block>
         <BlockTitle>Older than Today</BlockTitle>
-          {ordersOlder.length > 0 ? (
-            renderOrderListNew(ordersOlder)
-          ) : (
-            <Block>No older orders.</Block>
-          )}
-        </Block>
-     
-
+        {ordersOlder.length > 0 ? (
+          renderOrderListrev(ordersOlder)
+        ) : (
+          <Block>No older orders.</Block>
+        )}
+      </Block>
     </Page>
-  );
-};
+  )
+}
 
-export default OrderListPage;
+export default OrderListPage

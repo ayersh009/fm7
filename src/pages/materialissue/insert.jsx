@@ -164,7 +164,8 @@ const InsertRecordPage = ({ f7router }) => {
       .single()
 
     if (masterError) {
-      console.error('Error inserting master record:', masterError)
+      console.error('Error inserting master record:', masterError.details)
+      f7.dialog.alert(masterError.details,'Error inserting master record:')
       setIsSubmitting(false)
       return
     }

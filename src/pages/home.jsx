@@ -61,8 +61,8 @@ const HomePage = () => (
     <Block>
       <BlockTitle>Material Issue</BlockTitle>
       <List strong inset dividersIos>
-        {/* <ListItem link="/about/" title="About"/>
-      <ListItem link="/form/" title="Form"/> */}
+        <ListItem link="/about/" title="About"/>
+      {/* <ListItem link="/form/" title="Form"/> */}
         <ListItem link='/materialissueinsert/' title='Add Record' />
         <ListItem
           link='/materialissuelist/'

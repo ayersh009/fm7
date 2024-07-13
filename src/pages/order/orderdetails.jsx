@@ -23,7 +23,7 @@ const OrderDetailsPage = ({ f7route }) => {
 
   return (
     <Page>
-      <Navbar title={`#${order.vehicleno}`} backLink="Back" />
+      <Navbar title={`${order.vehicleno}`} backLink="Back" />
       <Block strong>
         <BlockTitle>Order Details</BlockTitle>
         {renderOrderDetails()}

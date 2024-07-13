@@ -1,3 +1,7 @@
+.button-fill{
+    border-radius: 199px;
+}
+
 .label-celll {
     font-size: large;
 }
@@ -6,3 +10,43 @@
     font-size: large;
     text-align: right;
 }
+
+/* Add these styles to your CSS file or within a <style> tag in your component file */
+.list .item-media img {
+    border-radius: 50%;
+  }
+  
+  .list .item-after .badge {
+    border-radius: 12px;
+    padding: 2px 8px;
+  }
+  
+  .button-icon {
+    margin-right: 8px;
+  }
+
+  /* Add these styles to your CSS file or within a <style> tag in your component file */
+.list .item-media img {
+    border-radius: 50%;
+  }
+  
+  .list .item-after .badge {
+    border-radius: 12px;
+    padding: 2px 8px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .list .item-after .badge .icon {
+    margin-right: 4px;
+  }
+  
+  .button-outline {
+    margin-right: 16px;
+  }
+
+ /* Add these styles to your CSS file or within a <style> tag in your component file */
+
+ 
+  
+  
