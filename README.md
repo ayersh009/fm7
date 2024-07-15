@@ -4,6 +4,8 @@
 
 Framework7 app created with following options:
 
+This file is modified
+
 ```
 {
   "cwd": "D:\\inventify_app\\fm7",
