@@ -18,6 +18,7 @@ import {
 import { supabase } from '../../components/supabase'
 import DetailPopup from './DetailPopup'
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera'
+import imageCompression from 'browser-image-compression';
 
 const InsertRecordPage = ({ f7router }) => {
   const [formData, setFormData] = useState({
@@ -52,35 +53,58 @@ const InsertRecordPage = ({ f7router }) => {
     const photo = await Camera.getPhoto({
       resultType: CameraResultType.DataUrl,
       source: CameraSource.Camera,
-      quality: 90
-    })
-    const blob = await (await fetch(photo.dataUrl)).blob()
-    const file = new File([blob], `captured_photo.${blob.type.split('/')[1]}`, {
-      type: blob.type
-    })
-    setImage(photo.dataUrl)
-    await handleUpload(file)
-  }
-
+      quality: 90, // Start with a high-quality capture
+    });
+  
+    const blob = await (await fetch(photo.dataUrl)).blob();
+    const compressedBlob = await compressImage(blob);
+    const file = new File([compressedBlob], `captured_photo.${compressedBlob.type.split('/')[1]}`, {
+      type: compressedBlob.type
+    });
+  
+    setImage(photo.dataUrl);
+    await handleUpload(file);
+  };
+  
   const handlePickImage = async () => {
     const photo = await Camera.getPhoto({
       resultType: CameraResultType.DataUrl,
       source: CameraSource.Photos,
-      quality: 90
-    })
-    const blob = await (await fetch(photo.dataUrl)).blob()
-    const file = new File([blob], `picked_photo.${blob.type.split('/')[1]}`, {
-      type: blob.type
-    })
-    setImage(photo.dataUrl)
-    await handleUpload(file)
-  }
+      quality: 90, // Start with a high-quality selection
+    });
+  
+    const blob = await (await fetch(photo.dataUrl)).blob();
+    const compressedBlob = await compressImage(blob);
+    const file = new File([compressedBlob], `picked_photo.${compressedBlob.type.split('/')[1]}`, {
+      type: compressedBlob.type
+    });
+  
+    setImage(photo.dataUrl);
+    await handleUpload(file);
+  };
+
+
+  const compressImage = async (imageBlob) => {
+    const options = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 800,
+      useWebWorker: true,
+    };
+  
+    try {
+      const compressedBlob = await imageCompression(imageBlob, options);
+      return compressedBlob;
+    } catch (error) {
+      console.error("Error compressing image:", error);
+      return imageBlob;
+    }
+  };
 
   const handleUpload = async file => {
     setUploading(true)
     const fileExt = file.name.split('.').pop()
     const fileName = `${Date.now()}.${fileExt}`
-    const filePath = `images/${fileName}`
+    const filePath = `inventify/${fileName}`
 
     let { error: uploadError } = await supabase.storage
       .from('ordermanager') // replace with your bucket name
