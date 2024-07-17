@@ -18,6 +18,7 @@ import {
 import { supabase } from '../../components/supabase'
 import DetailPopup from './DetailPopup'
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera'
+import imageCompression from 'browser-image-compression'
 
 const InsertRecordPage = ({ f7router }) => {
   const [formData, setFormData] = useState({
@@ -48,22 +49,67 @@ const InsertRecordPage = ({ f7router }) => {
     setFormData({ ...formData, details: [...formData.details, detail] })
   }
 
-  const handleImageSelection = async () => {
+  const handleCapturePhoto = async () => {
     const photo = await Camera.getPhoto({
       resultType: CameraResultType.DataUrl,
-      source: CameraSource.Prompt,
-      quality: 90
+      source: CameraSource.Camera,
+      quality: 90 // Start with a high-quality capture
     })
 
-    const file = await (await fetch(photo.dataUrl)).blob()
+    const blob = await (await fetch(photo.dataUrl)).blob()
+    const compressedBlob = await compressImage(blob)
+    const file = new File(
+      [compressedBlob],
+      `captured_photo.${compressedBlob.type.split('/')[1]}`,
+      {
+        type: compressedBlob.type
+      }
+    )
 
     setImage(photo.dataUrl)
     await handleUpload(file)
   }
 
+  const handlePickImage = async () => {
+    const photo = await Camera.getPhoto({
+      resultType: CameraResultType.DataUrl,
+      source: CameraSource.Photos,
+      quality: 90 // Start with a high-quality selection
+    })
+
+    const blob = await (await fetch(photo.dataUrl)).blob()
+    const compressedBlob = await compressImage(blob)
+    const file = new File(
+      [compressedBlob],
+      `picked_photo.${compressedBlob.type.split('/')[1]}`,
+      {
+        type: compressedBlob.type
+      }
+    )
+
+    setImage(photo.dataUrl)
+    await handleUpload(file)
+  }
+
+  const compressImage = async imageBlob => {
+    const options = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 800,
+      useWebWorker: true
+    }
+
+    try {
+      const compressedBlob = await imageCompression(imageBlob, options)
+      return compressedBlob
+    } catch (error) {
+      console.error('Error compressing image:', error)
+      return imageBlob
+    }
+  }
+
   const handleUpload = async (file) => {
     setUploading(true)
-    const fileExt = file.type.split('/').pop()
+    const fileExt = file.name.split('.').pop()
     const fileName = `${Date.now()}.${fileExt}`
     const filePath = `inventify/${fileName}`
 
@@ -181,10 +227,12 @@ const InsertRecordPage = ({ f7router }) => {
       <Navbar title='Add Material Issue' backLink='Back' />
       {!image && (
         <Block strong outlineIos>
-          <div className='grid grid-cols-1 grid-gap'>
-            
-            <Button tonal onClick={handleImageSelection} disabled={uploading}>
-              {uploading ? 'Uploading...' : 'Capture or Pick image'}
+          <div className='grid grid-cols-2 grid-gap'>
+            <Button tonal onClick={handleCapturePhoto} disabled={uploading}>
+              {uploading ? 'Uploading...' : 'Capture Photo'}
+            </Button>
+            <Button tonal onClick={handlePickImage} disabled={uploading}>
+              {uploading ? 'Uploading...' : 'Pick Image'}
             </Button>
           </div>
         </Block>
