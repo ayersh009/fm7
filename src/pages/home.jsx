@@ -1,22 +1,15 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import {
   Page,
   Navbar,
-  NavLeft,
   NavTitle,
-  NavTitleLarge,
   NavRight,
   Link,
-  Toolbar,
   Block,
   BlockTitle,
   List,
-  Icon,
   ListItem,
-  Button,
-  f7,
-  useStore
-} from 'framework7-react'
+  f7} from 'framework7-react'
 import { App as CapacitorApp } from '@capacitor/app'
 
 const handleExitApp = () => {
@@ -61,7 +54,7 @@ const HomePage = () => (
     <Block>
       <BlockTitle>Material Issue</BlockTitle>
       <List strong inset dividersIos>
-        <ListItem link="/about/" title="About"/>
+        
       {/* <ListItem link="/form/" title="Form"/> */}
         <ListItem link='/materialissueinsert/' title='Add Record' />
         <ListItem

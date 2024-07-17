@@ -50,9 +50,7 @@ const UserList = () => (
         <ListItem
           key={user.id}
           title={user.name}
-          after={
-            <Badge color={statusColors[user.status]}>{user.status}</Badge>
-          }
+          after={<Badge color={statusColors[user.status]}>{user.status}</Badge>}
           text={`${user.date} - ${user.time}`}
           link="#"
         >

@@ -21,9 +21,11 @@ import EditRecordPage from '../pages/materialissue/EditRecordPage.jsx';
 
 //stock
 import StockSummaryPage from '../pages/stock/stocksummary.jsx';
+import authRoutes from '../pages/ui/authRoutes.js'
 
 
 var routes = [
+  ...authRoutes,
   {
     path: '/',
     component: HomePage,

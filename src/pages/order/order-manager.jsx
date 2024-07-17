@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import {
   Page,
   List,
@@ -6,10 +6,10 @@ import {
   ListGroup,
   BlockTitle,
   f7,
-} from 'framework7-react';
-import { supabase } from '../components/supabase';
-import TrackingCard from '../components/trackingcard';
-import InProcessCard from '../components/inprocesscard';
+} from "framework7-react";
+import { supabase } from "../components/supabase";
+import TrackingCard from "../components/trackingcard";
+import InProcessCard from "../components/inprocesscard";
 //import CustomBottomSheet from '../components/CustomBottomSheet'; // Import your BottomSheet component
 
 const OrderPage = () => {
@@ -25,21 +25,21 @@ const OrderPage = () => {
   const fetchTrackingData = async () => {
     setIsRefreshing(true);
     const { data, error } = await supabase
-      .from('ordermanager')
-      .select('*')
-      .order('orderdate', { ascending: false });
+      .from("ordermanager")
+      .select("*")
+      .order("orderdate", { ascending: false });
 
     if (error) {
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
     } else {
       // Separate "In Process" records
-      const inProcess = data.filter((item) => item.status === 'In Process');
-      const others = data.filter((item) => item.status !== 'In Process');
+      const inProcess = data.filter((item) => item.status === "In Process");
+      const others = data.filter((item) => item.status !== "In Process");
 
       // Combine into sections
       const sections = [
-        { title: 'In Process', data: inProcess },
-        { title: 'Others', data: others },
+        { title: "In Process", data: inProcess },
+        { title: "Others", data: others },
       ];
 
       setTrackingData(sections);
@@ -57,10 +57,9 @@ const OrderPage = () => {
   };
 
   const renderItem = (item) => {
-    if (item.status === 'In Process') {
+    if (item.status === "In Process") {
       return (
         <ListItem onClick={() => onItemPress(item)}>
-          
           <InProcessCard item={item} />
         </ListItem>
       );
@@ -74,7 +73,7 @@ const OrderPage = () => {
   };
 
   const renderSectionHeader = (title, data) => {
-    if (title === 'In Process' && data.length === 0) {
+    if (title === "In Process" && data.length === 0) {
       return <BlockTitle>No In Process Records</BlockTitle>;
     }
     return <BlockTitle>{title}</BlockTitle>;
@@ -85,12 +84,9 @@ const OrderPage = () => {
       {trackingData.map((section) => (
         <ListGroup key={section.title}>
           {renderSectionHeader(section.title, section.data)}
-          <List>
-            {section.data.map((item) => renderItem(item))}
-          </List>
+          <List>{section.data.map((item) => renderItem(item))}</List>
         </ListGroup>
       ))}
-     
     </Page>
   );
 };

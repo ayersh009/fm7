@@ -70,23 +70,18 @@ const orders = [
 
 const OrderList = () => (
   <Page>
-    <Navbar title="Orders" backLink="Back" />
+    <Navbar title="UI Testing Screen" backLink="Back" />
     <Block>
-    <List mediaList>
-      {orders.map((order) => (
-        <ListItem
-          key={order.id}
-          title={order.name}
-          text={order.amount}
-          subtitle={order.orderId}
-          after={<Badge color={order.statusColor}>{order.status}</Badge>}
-          link="#"
-          style={{ backgroundColor: order.status === 'Partially Shippe' ? '#3b5998' : 'transparent', color: order.status === 'Partially Shipped' ? '#ffffff' : '#000000' }}
-        >
-          <img slot="media" src={order.avatar} width="24" />
-        </ListItem>
-      ))}
-    </List>
+    <Block>
+      <BlockTitle>Stock Movement</BlockTitle>
+      <List strong inset dividersIos>
+        <ListItem link='/ui1/' title='UI1' />
+        <ListItem link='/ui2/' title='UI2' />
+        <ListItem link="/about/" title="About"/>
+        <ListItem link='/stocksummary/' title='Stock Summary' badge='New'
+          badgeColor='green' />
+      </List>
+    </Block>
     </Block>
   </Page>
 );

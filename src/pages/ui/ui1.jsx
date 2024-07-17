@@ -14,52 +14,44 @@ import {
 const users = [
   {
     id: 1,
-    name: 'James Brown',
-    status: 'Absent',
-    detail: 'Replaced by Ravi Patel',
+    name: '17-July | GJ23AW8800',
+    status: 'In Process',
+    detail: 'Stock Transfer',
     avatar: 'path_to_james_avatar_image',
     statusColor: 'gray',
   },
   {
     id: 2,
-    name: 'Sophia Williams',
-    status: 'Away',
-    detail: 'Synergy',
+    name: '17-July | GJ23AW8800',
+    status: 'Reported',
+    detail: 'Export',
     avatar: 'path_to_sophia_avatar_image',
     statusColor: 'yellow',
-    time: '25m',
+    time: 'Loaded',
   },
   {
     id: 3,
-    name: 'Arthur Taylor',
-    status: 'Away',
-    detail: 'Apex',
-    avatar: 'path_to_arthur_avatar_image',
-    statusColor: 'yellow',
-    time: '12m',
+    name: '17-July | GJ23AW8800',
+    status: 'Loaded',
+    detail: 'Domestic',
+    avatar: 'path_to_sophia_avatar_image',
+    statusColor: 'green',
+    time: 'Loaded',
   },
-  {
-    id: 4,
-    name: 'Emma Wright',
-    status: 'Away',
-    detail: 'Pulse',
-    avatar: 'path_to_emma_avatar_image',
-    statusColor: 'yellow',
-    time: '8m',
-  },
+
 ];
 
 const StatusTracker = () => (
   <Page>
-    <Navbar title="Status Tracker">
+    <Navbar title="Status Tracker" backLink="Back">
       <Button slot="right" small outline>
         See All
       </Button>
     </Navbar>
-    <BlockTitle>Absent</BlockTitle>
+    <BlockTitle>Pending</BlockTitle>
     <List mediaList>
       {users
-        .filter((user) => user.status === 'Absent')
+        .filter((user) => user.status === 'In Process' || user.status === 'Reported')
         .map((user) => (
           <ListItem
             key={user.id}
@@ -68,16 +60,16 @@ const StatusTracker = () => (
             after={
               <Badge color={user.statusColor}>{user.status}</Badge>
             }
-            link="#"
+            link={`/orderdetails/${encodeURIComponent(JSON.stringify(user))}`}
           >
             <img slot="media" src={user.avatar} width="44" />
           </ListItem>
         ))}
     </List>
-    <BlockTitle>Away</BlockTitle>
+    <BlockTitle>Completed</BlockTitle>
     <List mediaList>
       {users
-        .filter((user) => user.status === 'Away')
+        .filter((user) => user.status === 'Loaded')
         .map((user) => (
           <ListItem
             key={user.id}
@@ -85,7 +77,7 @@ const StatusTracker = () => (
             text={user.detail}
             after={
               <Badge color={user.statusColor}>
-                <Icon f7="time" /> {user.time}
+                {user.time}
               </Badge>
             }
             link="#"
