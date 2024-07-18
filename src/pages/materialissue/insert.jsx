@@ -61,7 +61,7 @@ const InsertRecordPage = ({ f7router }) => {
     await handleUpload(file)
   }
 
-  const handleUpload = async (file) => {
+  const handleUpload = async file => {
     setUploading(true)
     const fileExt = file.type.split('/').pop()
     const fileName = `${Date.now()}.${fileExt}`
@@ -133,6 +133,13 @@ const InsertRecordPage = ({ f7router }) => {
       return
     }
 
+    // Validate that there is at least one detail record
+  if (details.length === 0) {
+    f7.dialog.alert('Please add at least one product record.');
+    setIsSubmitting(false);
+    return;
+  }
+
     const { data: masterData, error: masterError } = await supabase
       .from('MaterialIssueTracker')
       .insert([
@@ -176,13 +183,18 @@ const InsertRecordPage = ({ f7router }) => {
     setIsSubmitting(false)
   }
 
+  const handleDelete = index => {
+    const newDetails = [...formData.details]
+    newDetails.splice(index, 1)
+    setFormData({ ...formData, details: newDetails })
+  }
+
   return (
     <Page>
       <Navbar title='Add Material Issue' backLink='Back' />
       {!image && (
         <Block strong outlineIos>
           <div className='grid grid-cols-1 grid-gap'>
-            
             <Button tonal onClick={handleImageSelection} disabled={uploading}>
               {uploading ? 'Uploading...' : 'Capture or Pick image'}
             </Button>
@@ -314,7 +326,11 @@ const InsertRecordPage = ({ f7router }) => {
                   <td className='numeric-cell'>{detail.batch}</td>
                   <td className='numeric-cell'>{detail.pallet}</td>
                   <td className='actions-cell'>
-                    <Link iconIos='f7:trash' iconMd='material:delete' />
+                    <Link
+                      onClick={() => handleDelete(index)}
+                      iconIos='f7:trash'
+                      iconMd='material:delete'
+                    />
                   </td>
                 </tr>
               ))}

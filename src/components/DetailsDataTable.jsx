@@ -11,6 +11,7 @@ import {
   ListInput,
   Navbar,
   Block,
+  Icon,
   CardHeader,
   Link
 } from 'framework7-react'
@@ -122,6 +123,7 @@ const DetailsDataTable = ({ mrn_no }) => {
         <CardHeader>
           <div className='data-table-links'>
             <a className='button' onClick={handleAddClick}>
+              <Icon f7='plus-filled' size='24px' color='blue' padding></Icon>{' '}
               Add Product
             </a>
           </div>
@@ -147,10 +149,18 @@ const DetailsDataTable = ({ mrn_no }) => {
                   <td className='numeric-cell'>{detail.batch}</td>
                   <td className='numeric-cell'>{detail.pallet}</td>
                   <td className='actions-cell'>
-                    <Link iconIos='f7:square_pencil' iconMd='material:edit' onClick={() => handleEditClick(detail)} />
-                    <Link iconIos='f7:trash' iconMd='material:delete' onClick={() => handleDeleteClick(detail.id)} />
+                    <Link
+                      iconIos='f7:square_pencil'
+                      iconMd='material:edit'
+                      onClick={() => handleEditClick(detail)}
+                    />
+                    <Link
+                      iconIos='f7:trash'
+                      iconMd='material:delete'
+                      onClick={() => handleDeleteClick(detail.id)}
+                    />
                   </td>
-                 {/*  <td className='actions-cell'>
+                  {/*  <td className='actions-cell'>
                     <Button onClick={() => handleEditClick(detail)}>
                       Edit
                     </Button>
@@ -164,7 +174,7 @@ const DetailsDataTable = ({ mrn_no }) => {
           </table>
         </CardContent>
       </Card>
-     {/*  <Block>
+      {/*  <Block>
         <Button fill onClick={handleAddClick}>
           Add Record
         </Button>
@@ -180,7 +190,7 @@ const DetailsDataTable = ({ mrn_no }) => {
             <ListInput
               label='Product'
               type='text'
-              placeholder="Enter Product"
+              placeholder='Enter Product'
               name='product'
               value={editForm.product || ''}
               onInput={handleInputChange}
@@ -188,27 +198,29 @@ const DetailsDataTable = ({ mrn_no }) => {
             <ListInput
               label='Quantity'
               type='text'
-              placeholder="Enter Quantity"
+              placeholder='Enter Quantity'
               name='qty'
               value={editForm.qty || ''}
               onInput={handleInputChange}
             />
             <ListInput
               label='UOM'
-              type="select"
-              placeholder="Select UOM"
+              type='select'
+              placeholder='Select UOM'
               name='uom'
               value={editForm.uom || ''}
               onInput={handleInputChange}
-            > <option value="">Select UOM</option>
-            <option value="Packet">Packet</option>
-            <option value="Box">Box</option>
+            >
+              {' '}
+              <option value=''>Select UOM</option>
+              <option value='Packet'>Packet</option>
+              <option value='Box'>Box</option>
             </ListInput>
             <ListInput
               label='Batch'
               type='text'
               name='batch'
-               placeholder="Enter Batch"
+              placeholder='Enter Batch'
               value={editForm.batch || ''}
               onInput={handleInputChange}
             />
@@ -216,7 +228,7 @@ const DetailsDataTable = ({ mrn_no }) => {
               label='Pallet'
               type='text'
               name='pallet'
-              placeholder="Enter Pallet"
+              placeholder='Enter Pallet'
               value={editForm.pallet || ''}
               onInput={handleInputChange}
             />

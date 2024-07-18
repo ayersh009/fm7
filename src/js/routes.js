@@ -1,13 +1,13 @@
 
 import HomePage from '../pages/home.jsx';
-import AboutPage from '../pages/about.jsx';
-import FormPage from '../pages/form.jsx';
-import CatalogPage from '../pages/stock/catalog.jsx';
-import ProductPage from '../pages/product.jsx';
+import AboutPage from '../pages/other/about.jsx';
+import FormPage from '../pages/other/form.jsx';
+import CatalogPage from '../pages/catalog.jsx';
+import ProductPage from '../pages/other/product.jsx';
 import SettingsPage from '../pages/settings.jsx';
 
-import DynamicRoutePage from '../pages/dynamic-route.jsx';
-import RequestAndLoad from '../pages/request-and-load.jsx';
+import DynamicRoutePage from '../pages/other/dynamic-route.jsx';
+import RequestAndLoad from '../pages/other/request-and-load.jsx';
 import NotFoundPage from '../pages/404.jsx';
 import CsvPage from '../pages/stock/CsvPage.jsx'
 import MovePage from '../pages/stock/move.jsx'
