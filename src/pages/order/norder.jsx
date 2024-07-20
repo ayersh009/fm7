@@ -16,11 +16,11 @@ import store from '../../js/store'
 import CustomListView from '../../components/neworder'
 
 const OrderListPage = ({ f7router }) => {
-  const orders = useStore('orders')
+  const orders = useStore('ordersold')
   const [filter, setFilter] = useState('All')
 
   useEffect(() => {
-    store.dispatch('fetchOrders')
+    store.dispatch('fetchOrdersold')
   }, [])
 
   const filteredOrders = orders.filter(

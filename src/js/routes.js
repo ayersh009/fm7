@@ -22,10 +22,12 @@ import EditRecordPage from '../pages/materialissue/EditRecordPage.jsx';
 //stock
 import StockSummaryPage from '../pages/stock/stocksummary.jsx';
 import authRoutes from '../pages/ui/authRoutes.js'
+import ordersRoutes from '../pages/memento/ordersRoutes.js';
 
 
 var routes = [
   ...authRoutes,
+  ...ordersRoutes,
   {
     path: '/',
     component: HomePage,

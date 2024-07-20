@@ -1,3 +1,4 @@
+// StatusTracker.js
 import React, { useEffect } from 'react';
 import {
   Page,
@@ -8,7 +9,7 @@ import {
   BlockTitle,
   Button,
   Icon,
-  Block,
+  f7
 } from 'framework7-react';
 import { useStore } from 'framework7-react';
 import store from '../../js/store'; // Adjust the path as needed
@@ -39,7 +40,7 @@ const getStatusColor = (status) => {
   }
 };
 
-const StatusTracker = () => {
+const StatusTracker = ({f7router}) => {
   const pendingOrders = useStore('pendingOrders');
   const completedOrders = useStore('completedOrders');
 
@@ -50,8 +51,8 @@ const StatusTracker = () => {
   return (
     <Page>
       <Navbar title="Status Tracker" backLink="Back">
-        <Button slot="right" small outline>
-          See All Orders
+      <Button slot="right" small outline onClick={() => f7router.navigate('/add-order/')}>
+          Add Order
         </Button>
       </Navbar>
       <BlockTitle>Pending</BlockTitle>
