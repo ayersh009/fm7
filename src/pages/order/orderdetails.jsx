@@ -1,5 +1,6 @@
 import React from 'react';
 import { Page, Navbar, Block, BlockTitle } from 'framework7-react';
+import DetailsDataTable from '../memento/OrderDetails'
 
 const OrderDetailsPage = ({ f7route }) => {
   const order = JSON.parse(decodeURIComponent(f7route.params.order));
@@ -28,6 +29,7 @@ const OrderDetailsPage = ({ f7route }) => {
         <BlockTitle>Order Details</BlockTitle>
         {renderOrderDetails()}
       </Block>
+      <DetailsDataTable orderid={order.id} />
     </Page>
   );
 };

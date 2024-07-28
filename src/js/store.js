@@ -73,7 +73,7 @@ const store = createStore({
       if (error) {
         console.error('Error fetching orders:', error)
       } else {
-        state.ordersold = data
+        state.orders = data
       }
     },
     async fetchOrderById ({ state }, memeID) {

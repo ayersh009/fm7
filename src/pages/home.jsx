@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import {
   Page,
   Navbar,
@@ -35,6 +35,9 @@ const HomePage = () => {
     976 - results.filter(item => item.Balance > 5).length
   const maxValue = 976
   const percentage = (countBalancesGreaterThanFive / maxValue) * 100
+
+  
+
 
   return (
     <Page name='home'>

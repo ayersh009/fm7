@@ -16,7 +16,7 @@ import store from '../../js/store'
 import CustomListView from '../../components/neworder'
 
 const OrderListPage = ({ f7router }) => {
-  const orders = useStore('ordersold')
+  const orders = useStore('orders')
   const [filter, setFilter] = useState('All')
 
   useEffect(() => {
@@ -43,7 +43,7 @@ const OrderListPage = ({ f7router }) => {
     Loaded: 'green',
     Reported: 'orange',
     'In Process': 'yellow'
-  };
+  }
 
   const renderOrderList = orders => (
     <List>
@@ -68,12 +68,14 @@ const OrderListPage = ({ f7router }) => {
         <ListItem
           key={order.memeID}
           title={order.vehicleno}
-          after={<Badge color={statusColors[order.status]}>{order.status}</Badge>}
-          text={`${new Date(order.orderdate).toLocaleDateString()} - ${order.destination}`}
+          after={
+            <Badge color={statusColors[order.status]}>{order.status}</Badge>
+          }
+          text={`${new Date(order.orderdate).toLocaleDateString()} - ${
+            order.destination
+          }`}
           link={`/orderdetails/${encodeURIComponent(JSON.stringify(order))}`}
-        >
-          
-        </ListItem>
+        ></ListItem>
       ))}
     </List>
   )
